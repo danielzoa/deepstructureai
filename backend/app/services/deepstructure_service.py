@@ -285,6 +285,24 @@ class DeepStructureService:
         normalized = command.strip().lower()
         if any(token in normalized for token in self.dangerous_tokens):
             return {"output": "Comando bloqueado por segurança.", "blocked": True, "warnings": ["dangerous_command"]}
+        if normalized in {"/help", "help"}:
+            payload = {
+                "commands": [
+                    "/about",
+                    "/health",
+                    "/team",
+                    "/models",
+                    "/documents",
+                    "/activity",
+                    "/graph stats",
+                    "/graph build",
+                    "/semantic search",
+                    "/validate idea",
+                    "/search termo",
+                ],
+                "hint": "Use o chat para perguntas abertas e as ferramentas para estado do projeto.",
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/about", "about"}:
             return {"output": json.dumps(self.about(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/health", "health"}:
@@ -313,10 +331,27 @@ class DeepStructureService:
                 "status": "available",
                 "target": "knowledge/NTG/imports/web_uploads",
                 "allowed": sorted(self.allowed_document_suffixes),
+                "documentsCount": len(self.documents()),
             }
             return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/graph build", "graph build"}:
-            return {"output": json.dumps(self.graph_stats(), ensure_ascii=False, indent=2), "blocked": False, "warnings": ["graph_build_mock"]}
+            payload = {
+                "status": "ready",
+                "message": "Resumo do grafo recalculado a partir dos dados disponíveis.",
+                **self.graph_stats(),
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": ["graph_build_summary"]}
+        if normalized.startswith("/search ") or normalized.startswith("search "):
+            term = normalized.split(" ", 1)[1].strip()
+            docs = [doc for doc in self.documents() if term in doc["name"].lower() or term in doc.get("path", "").lower()]
+            nodes = [node for node in self.graph()["nodes"] if term in node["label"].lower() or term in node["id"].lower()]
+            payload = {
+                "term": term,
+                "documents": docs[:10],
+                "nodes": nodes[:10],
+                "total": len(docs) + len(nodes),
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/semantic search", "semantic search"}:
             payload = {
                 "status": "ready",

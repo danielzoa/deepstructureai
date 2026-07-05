@@ -126,6 +126,20 @@ export const api = {
       routes: {},
       activeRoutes: {}
     }),
+  testRouter: (mode = "chat", dryRun = true) =>
+    request(
+      "/api/router/test",
+      {
+        method: "POST",
+        body: JSON.stringify({ message: "Responda apenas: ok", mode, model: "auto", dryRun })
+      },
+      {
+        mode,
+        model: "mock",
+        chain: ["mock"],
+        dryRun
+      }
+    ),
   sendChatMessage: (message: string, mode = "chat", model = "glm") =>
     request(
       "/api/chat",

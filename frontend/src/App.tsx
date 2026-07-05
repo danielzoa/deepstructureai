@@ -32,6 +32,7 @@ const initialMessage: ChatMessage = {
 
 const toolCommands = ["/about", "/health", "/team", "/models", "/benchmark", "/graph stats", "/graph build", "/lab start", "/semantic search", "/validate idea", "/documents", "/activity"];
 const chatStorageKey = "deepstructureai.chat.v1";
+const routeModes = ["chat", "fast", "document", "critic", "code", "lab", "offline"];
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>("chat");
@@ -122,10 +123,12 @@ export default function App() {
   }
 
   async function send(message: string) {
-    setMessages((current) => [...current, { role: "user", content: message }]);
+    const trimmed = message.trim();
+    if (!trimmed) return;
+    setMessages((current) => [...current, { role: "user", content: trimmed }]);
 
-    if (message.trim().startsWith("/")) {
-      const response = await api.runCommand(message);
+    if (trimmed.startsWith("/")) {
+      const response = await api.runCommand(trimmed);
       setMessages((current) => [
         ...current,
         {
@@ -134,10 +137,11 @@ export default function App() {
           meta: response.warnings?.length ? `Comando | aviso: ${response.warnings.join(", ")}` : "Comando"
         }
       ]);
+      refreshAll();
       return;
     }
 
-    const response = await api.sendChatMessage(message, chatMode, "auto");
+    const response = await api.sendChatMessage(trimmed, chatMode, "auto");
     setMessages((current) => [
       ...current,
       {
@@ -171,6 +175,23 @@ export default function App() {
     setActiveView("tools");
     const response = await api.runCommand(command);
     setToolOutput(response.output);
+    refreshAll();
+  }
+
+  async function testRoute(mode: string) {
+    setActiveView("settings");
+    const response = await api.testRouter(mode, true);
+    setToolOutput(JSON.stringify(response, null, 2));
+  }
+
+  function exportJson(name: string, data: unknown) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `deepstructureai-${name}-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   function clearChat() {
@@ -259,7 +280,10 @@ export default function App() {
               ["Testes", `${lab.testsCount}`],
               ["Progresso", `${lab.progress}%`]
             ]} />
-            <button className="wide-button" onClick={() => runTool("/lab start")}>Atualizar laboratório</button>
+            <div className="action-row">
+              <button className="wide-button" onClick={() => runTool("/lab start")}>Atualizar laboratório</button>
+              <button className="wide-button" onClick={() => exportJson("laboratorio", lab)}>Exportar laboratório</button>
+            </div>
           </DetailPanel>
         )}
 
@@ -267,7 +291,10 @@ export default function App() {
           <DetailPanel title="Memória" description="Resumo das memórias usadas pelo DeepStructureAI.">
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar memórias..." />
             <DataList items={filterRows(memory.map((item) => [item.name, `${item.size} MB`]))} />
-            <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semântica</button>
+            <div className="action-row">
+              <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semântica</button>
+              <button className="wide-button" onClick={() => exportJson("memoria", memory)}>Exportar memória</button>
+            </div>
           </DetailPanel>
         )}
 
@@ -276,7 +303,10 @@ export default function App() {
             <MetricGrid items={[["Nós", `${graph.nodes.length}`], ["Relações", `${graph.edges.length}`], ["Clusters", `${summary.clusters}`], ["Conceitos", `${summary.concepts}`]]} />
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar nós do grafo..." />
             <DataList items={filterRows(graph.nodes.map((node) => [node.label || node.id, node.id])).slice(0, 80)} />
-            <button className="wide-button" onClick={() => runTool("/graph build")}>Recalcular resumo do grafo</button>
+            <div className="action-row">
+              <button className="wide-button" onClick={() => runTool("/graph build")}>Recalcular resumo do grafo</button>
+              <button className="wide-button" onClick={() => exportJson("grafo", graph)}>Exportar grafo</button>
+            </div>
           </DetailPanel>
         )}
 
@@ -285,6 +315,7 @@ export default function App() {
             <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar documentos..." />
             <DataList items={filterRows(documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`]))} />
+            <button className="wide-button" onClick={() => exportJson("documentos", documents)}>Exportar documentos</button>
           </DetailPanel>
         )}
 
@@ -310,7 +341,13 @@ export default function App() {
             <h3>Modelos</h3>
             <DataList items={models.map((model) => [model.name, model.available ? "disponível" : "indisponível"])} />
             <h3>Rotas ativas</h3>
+            <div className="tool-grid">
+              {routeModes.map((mode) => (
+                <button key={mode} onClick={() => testRoute(mode)}>Testar {mode}</button>
+              ))}
+            </div>
             <pre className="output-box">{JSON.stringify(routerStatus.activeRoutes || {}, null, 2)}</pre>
+            <pre className="output-box">{toolOutput}</pre>
           </DetailPanel>
         )}
 
@@ -318,7 +355,10 @@ export default function App() {
           <DetailPanel title="Atividade Recente" description="Eventos recentes do agente e fallback de atividade do MVP.">
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar atividade..." />
             <DataList items={filterRows(activity.map((item) => [item.time || "--:--", item.event]))} />
-            <button className="wide-button" onClick={() => runTool("/activity")}>Ver JSON da atividade</button>
+            <div className="action-row">
+              <button className="wide-button" onClick={() => runTool("/activity")}>Ver JSON da atividade</button>
+              <button className="wide-button" onClick={() => exportJson("atividade", activity)}>Exportar atividade</button>
+            </div>
           </DetailPanel>
         )}
       </div>

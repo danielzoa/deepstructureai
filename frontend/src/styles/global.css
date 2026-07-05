@@ -699,6 +699,12 @@ button {
   gap: 10px;
 }
 
+.action-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .tool-grid button {
   min-height: 38px;
   padding: 0 12px;
@@ -819,7 +825,8 @@ button {
   }
 
   .detail-metrics,
-  .data-list div {
+  .data-list div,
+  .action-row {
     grid-template-columns: 1fr;
   }
 }
