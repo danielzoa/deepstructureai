@@ -1,4 +1,4 @@
-import { SendHorizontal } from "lucide-react";
+import { Download, RotateCcw, SendHorizontal, Trash2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 
 import type { ChatMessage } from "../api/client";
@@ -19,11 +19,13 @@ const modes = [
 type Props = {
   messages: ChatMessage[];
   mode: string;
+  onClear: () => void;
+  onExport: () => void;
   onModeChange: (mode: string) => void;
   onSend: (message: string) => void;
 };
 
-export function ChatPanel({ messages, mode, onModeChange, onSend }: Props) {
+export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onSend }: Props) {
   const [value, setValue] = useState("");
 
   function submit(event: FormEvent) {
@@ -60,6 +62,17 @@ export function ChatPanel({ messages, mode, onModeChange, onSend }: Props) {
           <div>
             <strong>DeepStructureAI</strong>
             <span>Assistente de Pesquisa Cientifica</span>
+          </div>
+          <div className="chat-tools">
+            <button onClick={onExport} title="Exportar conversa" type="button">
+              <Download size={16} />
+            </button>
+            <button onClick={() => onSend("/health")} title="Atualizar status" type="button">
+              <RotateCcw size={16} />
+            </button>
+            <button onClick={onClear} title="Limpar conversa" type="button">
+              <Trash2 size={16} />
+            </button>
           </div>
         </div>
 

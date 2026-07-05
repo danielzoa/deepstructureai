@@ -1,15 +1,16 @@
-import { Menu, Settings, Sun } from "lucide-react";
+import { Menu, RefreshCw, Settings, Sun } from "lucide-react";
 
 import { StatusBadge } from "./StatusBadge";
 
 type Props = {
   connected: boolean;
   onMenu: () => void;
+  onRefresh: () => void;
   onSettings: () => void;
   onThemeToggle: () => void;
 };
 
-export function Topbar({ connected, onMenu, onSettings, onThemeToggle }: Props) {
+export function Topbar({ connected, onMenu, onRefresh, onSettings, onThemeToggle }: Props) {
   return (
     <header className="topbar">
       <button className="icon-button" onClick={onMenu} title="Menu">
@@ -17,6 +18,9 @@ export function Topbar({ connected, onMenu, onSettings, onThemeToggle }: Props) 
       </button>
       <div className="topbar-actions">
         <StatusBadge online={connected} label={connected ? "GLM conectado" : "Modo local/demo"} />
+        <button className="icon-button" onClick={onRefresh} title="Atualizar dados">
+          <RefreshCw size={18} />
+        </button>
         <button className="icon-button" onClick={onThemeToggle} title="Tema">
           <Sun size={19} />
         </button>

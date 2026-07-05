@@ -31,6 +31,7 @@ const initialMessage: ChatMessage = {
 };
 
 const toolCommands = ["/about", "/health", "/team", "/models", "/benchmark", "/graph stats", "/graph build", "/lab start", "/semantic search", "/validate idea", "/documents", "/activity"];
+const chatStorageKey = "deepstructureai.chat.v1";
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>("chat");
@@ -63,10 +64,26 @@ export default function App() {
   const [chatMode, setChatMode] = useState("auto");
   const [toolOutput, setToolOutput] = useState("Selecione uma ferramenta para executar.");
   const [darkMode, setDarkMode] = useState(false);
+  const [detailSearch, setDetailSearch] = useState("");
 
   useEffect(() => {
     refreshAll();
+    const stored = window.localStorage.getItem(chatStorageKey);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as ChatMessage[];
+        if (Array.isArray(parsed) && parsed.length) {
+          setMessages(parsed);
+        }
+      } catch {
+        window.localStorage.removeItem(chatStorageKey);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(chatStorageKey, JSON.stringify(messages.slice(-80)));
+  }, [messages]);
 
   async function refreshAll() {
     const [
@@ -156,6 +173,35 @@ export default function App() {
     setToolOutput(response.output);
   }
 
+  function clearChat() {
+    setMessages([initialMessage]);
+    window.localStorage.removeItem(chatStorageKey);
+  }
+
+  function exportChat() {
+    const markdown = messages
+      .map((message) => `## ${message.role === "user" ? "Usuario" : "DeepStructureAI"}\n\n${message.content}\n\n${message.meta ? `_${message.meta}_\n` : ""}`)
+      .join("\n");
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `deepstructureai-chat-${new Date().toISOString().slice(0, 10)}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function filterRows(items: Array<[string, string]>) {
+    const term = detailSearch.trim().toLowerCase();
+    if (!term) return items;
+    return items.filter(([label, value]) => `${label} ${value}`.toLowerCase().includes(term));
+  }
+
+  function openView(view: ViewId) {
+    setDetailSearch("");
+    setActiveView(view);
+  }
+
   function selectAgent(agent: any) {
     setActiveView("chat");
     setChatMode(agent.name === "Critic" || agent.name === "Reviewer" ? "critic" : agent.name === "Writer" ? "document" : "auto");
@@ -179,17 +225,24 @@ export default function App() {
       return (
         <div className="dashboard-grid">
           <div className="main-column">
-            <ChatPanel messages={messages} mode={chatMode} onModeChange={setChatMode} onSend={send} />
+            <ChatPanel
+              messages={messages}
+              mode={chatMode}
+              onClear={clearChat}
+              onExport={exportChat}
+              onModeChange={setChatMode}
+              onSend={send}
+            />
             <div className="bottom-grid">
-              <LabCard lab={lab} onOpen={() => setActiveView("lab")} />
-              <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => setActiveView("articles")} />
+              <LabCard lab={lab} onOpen={() => openView("lab")} />
+              <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
             </div>
           </div>
           <aside className="right-column">
             <SummaryCards summary={summary} />
-            <KnowledgeGraphCard nodes={graph.nodes} onOpen={() => setActiveView("graph")} />
-            <MemoryCard items={memory} onOpen={() => setActiveView("memory")} />
-            <ActivityCard activity={activity} onOpen={() => setActiveView("activity")} />
+            <KnowledgeGraphCard nodes={graph.nodes} onOpen={() => openView("graph")} />
+            <MemoryCard items={memory} onOpen={() => openView("memory")} />
+            <ActivityCard activity={activity} onOpen={() => openView("activity")} />
           </aside>
         </div>
       );
@@ -212,7 +265,8 @@ export default function App() {
 
         {activeView === "memory" && (
           <DetailPanel title="Memoria" description="Resumo das memorias usadas pelo DeepStructureAI.">
-            <DataList items={memory.map((item) => [item.name, `${item.size} MB`])} />
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar memorias..." />
+            <DataList items={filterRows(memory.map((item) => [item.name, `${item.size} MB`]))} />
             <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semantica</button>
           </DetailPanel>
         )}
@@ -220,15 +274,17 @@ export default function App() {
         {activeView === "graph" && (
           <DetailPanel title="Grafo de Conhecimento" description="Nos e relacoes carregados do knowledge graph.">
             <MetricGrid items={[["Nos", `${graph.nodes.length}`], ["Relacoes", `${graph.edges.length}`], ["Clusters", `${summary.clusters}`], ["Conceitos", `${summary.concepts}`]]} />
-            <DataList items={graph.nodes.slice(0, 24).map((node) => [node.label || node.id, node.id])} />
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar nos do grafo..." />
+            <DataList items={filterRows(graph.nodes.map((node) => [node.label || node.id, node.id])).slice(0, 80)} />
             <button className="wide-button" onClick={() => runTool("/graph build")}>Recalcular resumo do grafo</button>
           </DetailPanel>
         )}
 
         {activeView === "articles" && (
           <DetailPanel title="Artigos e Documentos" description="Documentos encontrados em NTG, imports, output e data.">
-            <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => setActiveView("articles")} />
-            <DataList items={documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`])} />
+            <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar documentos..." />
+            <DataList items={filterRows(documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`]))} />
           </DetailPanel>
         )}
 
@@ -260,7 +316,8 @@ export default function App() {
 
         {activeView === "activity" && (
           <DetailPanel title="Atividade Recente" description="Eventos recentes do agente e fallback de atividade do MVP.">
-            <DataList items={activity.map((item) => [item.time || "--:--", item.event])} />
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar atividade..." />
+            <DataList items={filterRows(activity.map((item) => [item.time || "--:--", item.event]))} />
             <button className="wide-button" onClick={() => runTool("/activity")}>Ver JSON da atividade</button>
           </DetailPanel>
         )}
@@ -274,15 +331,16 @@ export default function App() {
         activeView={activeView}
         agents={agents}
         models={models}
-        onNavigate={setActiveView}
+        onNavigate={openView}
         onSelectAgent={selectAgent}
         onSelectModel={selectModel}
       />
       <main className="workspace">
         <Topbar
           connected={Boolean((health as any).glmConfigured)}
-          onMenu={() => setActiveView("chat")}
-          onSettings={() => setActiveView("settings")}
+          onMenu={() => openView("chat")}
+          onRefresh={refreshAll}
+          onSettings={() => openView("settings")}
           onThemeToggle={() => setDarkMode((current) => !current)}
         />
         {renderMainView()}
@@ -325,6 +383,14 @@ function DataList({ items }: { items: Array<[string, string]> }) {
           <span>{value}</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function SearchBox({ value, onChange, placeholder }: { value: string; onChange: (value: string) => void; placeholder: string }) {
+  return (
+    <div className="search-row">
+      <input value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} />
     </div>
   );
 }
