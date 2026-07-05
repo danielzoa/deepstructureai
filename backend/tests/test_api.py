@@ -22,8 +22,8 @@ def test_health_ok():
 
 
 def test_zai_openrouter_key_uses_openrouter_defaults(monkeypatch):
-    monkeypatch.delenv("ZAI_BASE_URL", raising=False)
-    monkeypatch.delenv("ZAI_MODEL", raising=False)
+    monkeypatch.setenv("ZAI_BASE_URL", "https://api.z.ai/api/paas/v4")
+    monkeypatch.setenv("ZAI_MODEL", "GLM-5.2")
     model = ZAIModel(api_key="sk-or-v1-test")
     assert model.base_url == "https://openrouter.ai/api/v1"
     assert model.model_name == "z-ai/glm-5.2"

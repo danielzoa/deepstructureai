@@ -12,14 +12,15 @@ class ZAIModel(BaseModel):
         self.api_key = api_key or os.getenv("ZAI_API_KEY")
         env_base_url = os.getenv("ZAI_BASE_URL")
         uses_openrouter_key = bool(self.api_key and self.api_key.startswith("sk-or-"))
-        default_base_url = (
-            "https://openrouter.ai/api/v1"
-            if uses_openrouter_key
-            else "https://api.z.ai/api/paas/v4"
-        )
-        default_model = "z-ai/glm-5.2" if uses_openrouter_key else "GLM-5.2"
-        self.model_name = model_name or os.getenv("ZAI_MODEL", default_model)
-        self.base_url = base_url or env_base_url or default_base_url
+        env_model = os.getenv("ZAI_MODEL")
+        if uses_openrouter_key:
+            self.base_url = base_url or "https://openrouter.ai/api/v1"
+            self.model_name = model_name or (
+                "z-ai/glm-5.2" if not env_model or env_model == "GLM-5.2" else env_model
+            )
+        else:
+            self.base_url = base_url or env_base_url or "https://api.z.ai/api/paas/v4"
+            self.model_name = model_name or env_model or "GLM-5.2"
         self.client = None
 
     @property
