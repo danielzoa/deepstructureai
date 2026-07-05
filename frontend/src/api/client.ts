@@ -6,6 +6,15 @@ const API_URL = configuredApiUrl || "http://localhost:8000";
 const DEMO_MODE =
   import.meta.env.VITE_DEMO_MODE === "true" || (!configuredApiUrl && !isLocalHost);
 
+export function getClientConfig() {
+  return {
+    apiUrl: API_URL,
+    demoMode: DEMO_MODE,
+    configuredApiUrl: configuredApiUrl || "",
+    hostname: typeof window !== "undefined" ? window.location.hostname : ""
+  };
+}
+
 export type ChatMessage = {
   role: "assistant" | "user";
   content: string;
@@ -48,6 +57,18 @@ export const api = {
       status: "demo",
       glmConfigured: false,
       ollamaAvailable: false
+    }),
+  getReadiness: () =>
+    request("/api/readiness", undefined, {
+      status: DEMO_MODE ? "demo" : "offline",
+      project: "DeepStructureAI",
+      frontendOrigins: [],
+      configuredModels: [],
+      modelStatus: {},
+      uploadDirectory: "knowledge/NTG/imports/web_uploads",
+      uploadDirectoryExists: false,
+      documentsCount: 0,
+      warnings: DEMO_MODE ? ["frontend_demo_mode"] : ["api_unavailable"]
     }),
   getModels: () =>
     request("/api/models", undefined, [

@@ -10,6 +10,11 @@ def health():
     return service.health()
 
 
+@router.get("/readiness")
+def readiness():
+    return service.readiness()
+
+
 @router.get("/about")
 def about():
     return service.about()

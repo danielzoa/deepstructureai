@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-import { api, type ChatMessage } from "./api/client";
+import { api, getClientConfig, type ChatMessage } from "./api/client";
 import { ActivityCard } from "./components/ActivityCard";
 import { ChatPanel } from "./components/ChatPanel";
 import { DocumentsCard } from "./components/DocumentsCard";
@@ -33,6 +33,7 @@ const initialMessage: ChatMessage = {
 const toolCommands = ["/about", "/health", "/team", "/models", "/benchmark", "/graph stats", "/graph build", "/lab start", "/semantic search", "/validate idea", "/documents", "/activity"];
 const chatStorageKey = "deepstructureai.chat.v1";
 const routeModes = ["chat", "fast", "document", "critic", "code", "lab", "offline"];
+const clientConfig = getClientConfig();
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>("chat");
@@ -61,6 +62,7 @@ export default function App() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [activity, setActivity] = useState<any[]>([]);
   const [routerStatus, setRouterStatus] = useState<any>({ routes: {}, activeRoutes: {}, models: [] });
+  const [readiness, setReadiness] = useState<any>({ status: "unknown", warnings: [] });
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [chatMode, setChatMode] = useState("auto");
   const [toolOutput, setToolOutput] = useState("Selecione uma ferramenta para executar.");
@@ -97,7 +99,8 @@ export default function App() {
       labData,
       docsData,
       activityData,
-      routerData
+      routerData,
+      readinessData
     ] = await Promise.all([
       api.getHealth(),
       api.getModels(),
@@ -108,7 +111,8 @@ export default function App() {
       api.getLabStatus(),
       api.getDocuments(),
       api.getActivity(),
-      api.getRouterStatus()
+      api.getRouterStatus(),
+      api.getReadiness()
     ]);
     setHealth(healthData as any);
     setModels(modelsData as any[]);
@@ -120,6 +124,7 @@ export default function App() {
     setDocuments(docsData as any[]);
     setActivity(activityData as any[]);
     setRouterStatus(routerData);
+    setReadiness(readinessData);
   }
 
   async function send(message: string) {
@@ -337,6 +342,15 @@ export default function App() {
               ["GLM", (health as any).glmConfigured ? "configurado" : "sem chave"],
               ["Ollama", (health as any).ollamaAvailable ? "online" : "offline"],
               ["Tema", darkMode ? "escuro" : "claro"]
+            ]} />
+            <h3>Prontidão</h3>
+            <DataList items={[
+              ["Frontend", clientConfig.demoMode ? "modo demo" : "conectado à API"],
+              ["API URL", clientConfig.apiUrl],
+              ["Backend", readiness.status || "desconhecido"],
+              ["Modelos ativos", readiness.configuredModels?.length ? readiness.configuredModels.join(", ") : "nenhum"],
+              ["Uploads", readiness.uploadDirectoryExists ? "diretório pronto" : "diretório não encontrado"],
+              ["Avisos", readiness.warnings?.length ? readiness.warnings.join(", ") : "sem avisos"]
             ]} />
             <h3>Modelos</h3>
             <DataList items={models.map((model) => [model.name, model.available ? "disponível" : "indisponível"])} />

@@ -19,6 +19,14 @@ def test_health_ok():
     assert response.json()["status"] == "ok"
 
 
+def test_readiness_ok():
+    response = client.get("/api/readiness")
+    assert response.status_code == 200
+    data = response.json()
+    assert "configuredModels" in data
+    assert "warnings" in data
+
+
 def test_summary_ok():
     response = client.get("/api/summary")
     assert response.status_code == 200

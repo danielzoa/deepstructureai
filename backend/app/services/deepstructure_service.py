@@ -62,6 +62,40 @@ class DeepStructureService:
             "ollamaAvailable": self._ollama_available(),
         }
 
+    def readiness(self):
+        frontend_origins = [
+            origin.strip().rstrip("/")
+            for origin in os.getenv("FRONTEND_ORIGINS", os.getenv("FRONTEND_URL", "")).split(",")
+            if origin.strip()
+        ]
+        model_keys = {
+            "glm": bool(os.getenv("ZAI_API_KEY")),
+            "gemini": bool(os.getenv("GEMINI_API_KEY")),
+            "groq": bool(os.getenv("GROQ_API_KEY")),
+            "deepseek": bool(os.getenv("DEEPSEEK_API_KEY")),
+            "ollama": self._ollama_available(),
+        }
+        import_dir = PROJECT_ROOT / "knowledge" / "NTG" / "imports" / "web_uploads"
+        warnings = []
+        if not any(model_keys.values()):
+            warnings.append("no_model_configured")
+        if not frontend_origins:
+            warnings.append("frontend_origins_not_configured")
+        if not import_dir.exists():
+            warnings.append("upload_directory_missing")
+
+        return {
+            "status": "ready" if not warnings else "attention",
+            "project": "DeepStructureAI",
+            "frontendOrigins": frontend_origins,
+            "configuredModels": [name for name, configured in model_keys.items() if configured],
+            "modelStatus": model_keys,
+            "uploadDirectory": str(import_dir.relative_to(PROJECT_ROOT)),
+            "uploadDirectoryExists": import_dir.exists(),
+            "documentsCount": len(self.documents()),
+            "warnings": warnings,
+        }
+
     def _ollama_available(self):
         url = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
         base_url = url.split("/api/")[0]
