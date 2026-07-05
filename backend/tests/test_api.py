@@ -9,6 +9,7 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from app.main import app
 from app.services.deepstructure_service import service
+from core.models.zai_model import ZAIModel
 
 
 client = TestClient(app)
@@ -18,6 +19,14 @@ def test_health_ok():
     response = client.get("/api/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+
+
+def test_zai_openrouter_key_uses_openrouter_defaults(monkeypatch):
+    monkeypatch.delenv("ZAI_BASE_URL", raising=False)
+    monkeypatch.delenv("ZAI_MODEL", raising=False)
+    model = ZAIModel(api_key="sk-or-v1-test")
+    assert model.base_url == "https://openrouter.ai/api/v1"
+    assert model.model_name == "z-ai/glm-5.2"
 
 
 def test_readiness_ok():
