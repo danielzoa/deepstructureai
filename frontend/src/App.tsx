@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 import { api, type ChatMessage } from "./api/client";
 import { ActivityCard } from "./components/ActivityCard";
@@ -7,7 +8,7 @@ import { DocumentsCard } from "./components/DocumentsCard";
 import { KnowledgeGraphCard } from "./components/KnowledgeGraphCard";
 import { LabCard } from "./components/LabCard";
 import { MemoryCard } from "./components/MemoryCard";
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar, type ViewId } from "./components/Sidebar";
 import { SummaryCards } from "./components/SummaryCards";
 import { Topbar } from "./components/Topbar";
 
@@ -29,7 +30,10 @@ const initialMessage: ChatMessage = {
   meta: "DeepStructureAI"
 };
 
+const toolCommands = ["/about", "/health", "/team", "/models", "/benchmark", "/graph stats", "/graph build", "/lab start", "/semantic search", "/validate idea", "/documents", "/activity"];
+
 export default function App() {
+  const [activeView, setActiveView] = useState<ViewId>("chat");
   const [health, setHealth] = useState({ glmConfigured: false });
   const [models, setModels] = useState<any[]>([]);
   const [agents, setAgents] = useState<any[]>([]);
@@ -54,11 +58,29 @@ export default function App() {
   });
   const [documents, setDocuments] = useState<any[]>([]);
   const [activity, setActivity] = useState<any[]>([]);
+  const [routerStatus, setRouterStatus] = useState<any>({ routes: {}, activeRoutes: {}, models: [] });
   const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [chatMode, setChatMode] = useState("auto");
+  const [toolOutput, setToolOutput] = useState("Selecione uma ferramenta para executar.");
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    Promise.all([
+    refreshAll();
+  }, []);
+
+  async function refreshAll() {
+    const [
+      healthData,
+      modelsData,
+      agentsData,
+      summaryData,
+      graphData,
+      memoryData,
+      labData,
+      docsData,
+      activityData,
+      routerData
+    ] = await Promise.all([
       api.getHealth(),
       api.getModels(),
       api.getAgents(),
@@ -67,22 +89,37 @@ export default function App() {
       api.getMemory(),
       api.getLabStatus(),
       api.getDocuments(),
-      api.getActivity()
-    ]).then(([healthData, modelsData, agentsData, summaryData, graphData, memoryData, labData, docsData, activityData]) => {
-      setHealth(healthData as any);
-      setModels(modelsData as any[]);
-      setAgents(agentsData as any[]);
-      setSummary(summaryData as Summary);
-      setGraph(graphData as any);
-      setMemory(memoryData as any[]);
-      setLab(labData);
-      setDocuments(docsData as any[]);
-      setActivity(activityData as any[]);
-    });
-  }, []);
+      api.getActivity(),
+      api.getRouterStatus()
+    ]);
+    setHealth(healthData as any);
+    setModels(modelsData as any[]);
+    setAgents(agentsData as any[]);
+    setSummary(summaryData as Summary);
+    setGraph(graphData as any);
+    setMemory(memoryData as any[]);
+    setLab(labData);
+    setDocuments(docsData as any[]);
+    setActivity(activityData as any[]);
+    setRouterStatus(routerData);
+  }
 
   async function send(message: string) {
     setMessages((current) => [...current, { role: "user", content: message }]);
+
+    if (message.trim().startsWith("/")) {
+      const response = await api.runCommand(message);
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content: response.output,
+          meta: response.warnings?.length ? `Comando | aviso: ${response.warnings.join(", ")}` : "Comando"
+        }
+      ]);
+      return;
+    }
+
     const response = await api.sendChatMessage(message, chatMode, "auto");
     setMessages((current) => [
       ...current,
@@ -103,37 +140,191 @@ export default function App() {
     });
     const contentBase64 = dataUrl.split(",")[1] || "";
     await api.importDocument(file.name, contentBase64);
-    const [docsData, summaryData] = await Promise.all([api.getDocuments(), api.getSummary()]);
+    const [docsData, summaryData, activityData] = await Promise.all([
+      api.getDocuments(),
+      api.getSummary(),
+      api.getActivity()
+    ]);
     setDocuments(docsData as any[]);
     setSummary(summaryData as Summary);
+    setActivity(activityData as any[]);
   }
 
-  return (
-    <div className="app-shell">
-      <Sidebar models={models} agents={agents} />
-      <main className="workspace">
-        <Topbar connected={Boolean((health as any).glmConfigured)} />
+  async function runTool(command: string) {
+    setActiveView("tools");
+    const response = await api.runCommand(command);
+    setToolOutput(response.output);
+  }
+
+  function selectAgent(agent: any) {
+    setActiveView("chat");
+    setChatMode(agent.name === "Critic" || agent.name === "Reviewer" ? "critic" : agent.name === "Writer" ? "document" : "auto");
+    setMessages((current) => [
+      ...current,
+      {
+        role: "assistant",
+        content: `${agent.name} selecionado. Envie uma pergunta para trabalhar com esse perfil.`,
+        meta: "Agente"
+      }
+    ]);
+  }
+
+  function selectModel(model: any) {
+    setActiveView("settings");
+    setToolOutput(`${model.name}: ${model.available ? "disponivel" : "indisponivel ou sem chave configurada"}`);
+  }
+
+  function renderMainView() {
+    if (activeView === "chat") {
+      return (
         <div className="dashboard-grid">
           <div className="main-column">
-            <ChatPanel
-              messages={messages}
-              mode={chatMode}
-              onModeChange={setChatMode}
-              onSend={send}
-            />
+            <ChatPanel messages={messages} mode={chatMode} onModeChange={setChatMode} onSend={send} />
             <div className="bottom-grid">
-              <LabCard lab={lab} />
-              <DocumentsCard documents={documents} onImport={importDocument} />
+              <LabCard lab={lab} onOpen={() => setActiveView("lab")} />
+              <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => setActiveView("articles")} />
             </div>
           </div>
           <aside className="right-column">
             <SummaryCards summary={summary} />
-            <KnowledgeGraphCard nodes={graph.nodes} />
-            <MemoryCard items={memory} />
-            <ActivityCard activity={activity} />
+            <KnowledgeGraphCard nodes={graph.nodes} onOpen={() => setActiveView("graph")} />
+            <MemoryCard items={memory} onOpen={() => setActiveView("memory")} />
+            <ActivityCard activity={activity} onOpen={() => setActiveView("activity")} />
           </aside>
         </div>
+      );
+    }
+
+    return (
+      <div className="detail-layout">
+        {activeView === "lab" && (
+          <DetailPanel title="Laboratorio" description="Status do laboratorio ativo e comandos de pesquisa.">
+            <MetricGrid items={[
+              ["Projeto", lab.project],
+              ["Hipotese", lab.hypothesis],
+              ["Evidencias", `${lab.evidenceCount}`],
+              ["Testes", `${lab.testsCount}`],
+              ["Progresso", `${lab.progress}%`]
+            ]} />
+            <button className="wide-button" onClick={() => runTool("/lab start")}>Atualizar laboratorio</button>
+          </DetailPanel>
+        )}
+
+        {activeView === "memory" && (
+          <DetailPanel title="Memoria" description="Resumo das memorias usadas pelo DeepStructureAI.">
+            <DataList items={memory.map((item) => [item.name, `${item.size} MB`])} />
+            <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semantica</button>
+          </DetailPanel>
+        )}
+
+        {activeView === "graph" && (
+          <DetailPanel title="Grafo de Conhecimento" description="Nos e relacoes carregados do knowledge graph.">
+            <MetricGrid items={[["Nos", `${graph.nodes.length}`], ["Relacoes", `${graph.edges.length}`], ["Clusters", `${summary.clusters}`], ["Conceitos", `${summary.concepts}`]]} />
+            <DataList items={graph.nodes.slice(0, 24).map((node) => [node.label || node.id, node.id])} />
+            <button className="wide-button" onClick={() => runTool("/graph build")}>Recalcular resumo do grafo</button>
+          </DetailPanel>
+        )}
+
+        {activeView === "articles" && (
+          <DetailPanel title="Artigos e Documentos" description="Documentos encontrados em NTG, imports, output e data.">
+            <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => setActiveView("articles")} />
+            <DataList items={documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`])} />
+          </DetailPanel>
+        )}
+
+        {activeView === "tools" && (
+          <DetailPanel title="Ferramentas" description="Comandos seguros conectados ao backend do MVP.">
+            <div className="tool-grid">
+              {toolCommands.map((command) => (
+                <button key={command} onClick={() => runTool(command)}>{command}</button>
+              ))}
+            </div>
+            <pre className="output-box">{toolOutput}</pre>
+          </DetailPanel>
+        )}
+
+        {activeView === "settings" && (
+          <DetailPanel title="Configuracoes" description="Estado de modelos, rotas e ambiente local.">
+            <MetricGrid items={[
+              ["API", (health as any).status || "demo"],
+              ["GLM", (health as any).glmConfigured ? "configurado" : "sem chave"],
+              ["Ollama", (health as any).ollamaAvailable ? "online" : "offline"],
+              ["Tema", darkMode ? "escuro" : "claro"]
+            ]} />
+            <h3>Modelos</h3>
+            <DataList items={models.map((model) => [model.name, model.available ? "disponivel" : "indisponivel"])} />
+            <h3>Rotas ativas</h3>
+            <pre className="output-box">{JSON.stringify(routerStatus.activeRoutes || {}, null, 2)}</pre>
+          </DetailPanel>
+        )}
+
+        {activeView === "activity" && (
+          <DetailPanel title="Atividade Recente" description="Eventos recentes do agente e fallback de atividade do MVP.">
+            <DataList items={activity.map((item) => [item.time || "--:--", item.event])} />
+            <button className="wide-button" onClick={() => runTool("/activity")}>Ver JSON da atividade</button>
+          </DetailPanel>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`app-shell ${darkMode ? "theme-dark" : ""}`}>
+      <Sidebar
+        activeView={activeView}
+        agents={agents}
+        models={models}
+        onNavigate={setActiveView}
+        onSelectAgent={selectAgent}
+        onSelectModel={selectModel}
+      />
+      <main className="workspace">
+        <Topbar
+          connected={Boolean((health as any).glmConfigured)}
+          onMenu={() => setActiveView("chat")}
+          onSettings={() => setActiveView("settings")}
+          onThemeToggle={() => setDarkMode((current) => !current)}
+        />
+        {renderMainView()}
       </main>
+    </div>
+  );
+}
+
+function DetailPanel({ title, description, children }: { title: string; description: string; children: ReactNode }) {
+  return (
+    <section className="detail-panel">
+      <div className="section-heading">
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </div>
+      <div className="panel-card detail-card">{children}</div>
+    </section>
+  );
+}
+
+function MetricGrid({ items }: { items: Array<[string, string]> }) {
+  return (
+    <div className="detail-metrics">
+      {items.map(([label, value]) => (
+        <div key={label}>
+          <span>{label}</span>
+          <strong>{value}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DataList({ items }: { items: Array<[string, string]> }) {
+  return (
+    <div className="data-list">
+      {items.map(([label, value], index) => (
+        <div key={`${label}-${index}`}>
+          <strong>{label}</strong>
+          <span>{value}</span>
+        </div>
+      ))}
     </div>
   );
 }

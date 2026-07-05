@@ -1,6 +1,6 @@
 type Activity = { time: string; event: string };
 
-export function ActivityCard({ activity }: { activity: Activity[] }) {
+export function ActivityCard({ activity, onOpen }: { activity: Activity[]; onOpen: () => void }) {
   return (
     <section className="panel-card lower-card">
       <h2>Atividade recente</h2>
@@ -12,7 +12,7 @@ export function ActivityCard({ activity }: { activity: Activity[] }) {
           </div>
         ))}
       </div>
-      <button className="link-button">Ver todas</button>
+      <button className="link-button" onClick={onOpen}>Ver todas</button>
     </section>
   );
 }

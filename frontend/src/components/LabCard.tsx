@@ -8,7 +8,7 @@ type Lab = {
   progress: number;
 };
 
-export function LabCard({ lab }: { lab: Lab }) {
+export function LabCard({ lab, onOpen }: { lab: Lab; onOpen: () => void }) {
   return (
     <section className="panel-card lower-card">
       <h2>Laboratorio ativo</h2>
@@ -37,6 +37,7 @@ export function LabCard({ lab }: { lab: Lab }) {
           <strong>{lab.progress}%</strong>
         </div>
       </div>
+      <button className="link-button" onClick={onOpen}>Abrir laboratorio</button>
     </section>
   );
 }

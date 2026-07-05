@@ -291,8 +291,46 @@ class DeepStructureService:
             return {"output": json.dumps(self.health(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/models", "models"}:
             return {"output": json.dumps(self.models(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/team", "team"}:
+            return {"output": json.dumps(self.agents(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/documents", "documents"}:
+            return {"output": json.dumps(self.documents()[:10], ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/activity", "activity"}:
+            return {"output": json.dumps(self.activity(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/lab status", "/lab start", "lab status", "lab start"}:
+            return {"output": json.dumps(self.lab_status(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/graph stats", "graph stats"}:
             return {"output": json.dumps(self.graph_stats(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/benchmark", "benchmark"}:
+            payload = {
+                "status": "ready",
+                "scope": "MVP",
+                "checks": ["health", "router", "summary", "graph", "chat fallback"],
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/import_ntg", "import_ntg"}:
+            payload = {
+                "status": "available",
+                "target": "knowledge/NTG/imports/web_uploads",
+                "allowed": sorted(self.allowed_document_suffixes),
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/graph build", "graph build"}:
+            return {"output": json.dumps(self.graph_stats(), ensure_ascii=False, indent=2), "blocked": False, "warnings": ["graph_build_mock"]}
+        if normalized in {"/semantic search", "semantic search"}:
+            payload = {
+                "status": "ready",
+                "memorySizeMb": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db"),
+                "message": "Busca semantica conectada em modo resumo no MVP.",
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": ["semantic_search_mock"]}
+        if normalized in {"/validate idea", "validate idea"}:
+            payload = {
+                "status": "ready",
+                "validator": "DeepSeek > GLM > Gemini > Ollama/mock",
+                "message": "Use o modo Critico ou Laboratorio para validar uma hipotese.",
+            }
+            return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": ["validator_hint"]}
         return {
             "output": "Comando reconhecido no MVP. A execucao profunda sera conectada ao CLI em uma proxima etapa.",
             "blocked": False,

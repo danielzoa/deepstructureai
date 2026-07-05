@@ -3,7 +3,7 @@ import { BrainCircuit, Database, FlaskConical, Network } from "lucide-react";
 type Item = { name: string; size: number };
 const icons = [Database, BrainCircuit, Network, FlaskConical];
 
-export function MemoryCard({ items }: { items: Item[] }) {
+export function MemoryCard({ items, onOpen }: { items: Item[]; onOpen: () => void }) {
   return (
     <section className="panel-card">
       <h2>Memoria</h2>
@@ -19,7 +19,7 @@ export function MemoryCard({ items }: { items: Item[] }) {
           );
         })}
       </div>
-      <button className="link-button">Ver todas</button>
+      <button className="link-button" onClick={onOpen}>Ver todas</button>
     </section>
   );
 }

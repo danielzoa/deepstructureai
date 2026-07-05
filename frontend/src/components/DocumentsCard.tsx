@@ -12,9 +12,10 @@ function formatSize(size: number) {
 type Props = {
   documents: Doc[];
   onImport: (file: File) => Promise<void>;
+  onOpen: () => void;
 };
 
-export function DocumentsCard({ documents, onImport }: Props) {
+export function DocumentsCard({ documents, onImport, onOpen }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [status, setStatus] = useState("");
 
@@ -57,7 +58,7 @@ export function DocumentsCard({ documents, onImport }: Props) {
         ))}
       </div>
       {status && <p className="card-status">{status}</p>}
-      <button className="link-button">Ver todos</button>
+      <button className="link-button" onClick={onOpen}>Ver todos</button>
     </section>
   );
 }

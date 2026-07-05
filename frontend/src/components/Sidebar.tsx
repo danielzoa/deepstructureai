@@ -13,18 +13,28 @@ import {
 
 type Model = { id: string; name: string; available: boolean };
 type Agent = { name: string; status: string };
+export type ViewId = "chat" | "lab" | "memory" | "graph" | "articles" | "tools" | "settings" | "activity";
 
 const nav = [
-  ["Chat", MessageSquare],
-  ["Laboratorio", FlaskConical],
-  ["Memoria", BrainCircuit],
-  ["Grafo", Network],
-  ["Artigos", GalleryHorizontal],
-  ["Ferramentas", Wrench],
-  ["Configuracoes", Settings]
+  ["chat", "Chat", MessageSquare],
+  ["lab", "Laboratorio", FlaskConical],
+  ["memory", "Memoria", BrainCircuit],
+  ["graph", "Grafo", Network],
+  ["articles", "Artigos", GalleryHorizontal],
+  ["tools", "Ferramentas", Wrench],
+  ["settings", "Configuracoes", Settings]
 ] as const;
 
-export function Sidebar({ models, agents }: { models: Model[]; agents: Agent[] }) {
+type Props = {
+  models: Model[];
+  agents: Agent[];
+  activeView: ViewId;
+  onNavigate: (view: ViewId) => void;
+  onSelectAgent: (agent: Agent) => void;
+  onSelectModel: (model: Model) => void;
+};
+
+export function Sidebar({ models, agents, activeView, onNavigate, onSelectAgent, onSelectModel }: Props) {
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -40,8 +50,13 @@ export function Sidebar({ models, agents }: { models: Model[]; agents: Agent[] }
       <section>
         <h2>Navegacao</h2>
         <nav className="nav-list">
-          {nav.map(([label, Icon], index) => (
-            <button className={index === 0 ? "active" : ""} key={label} title={label}>
+          {nav.map(([id, label, Icon]) => (
+            <button
+              className={activeView === id ? "active" : ""}
+              key={id}
+              onClick={() => onNavigate(id)}
+              title={label}
+            >
               <Icon size={18} />
               <span>{label}</span>
             </button>
@@ -53,11 +68,11 @@ export function Sidebar({ models, agents }: { models: Model[]; agents: Agent[] }
         <h2>Agentes</h2>
         <div className="compact-list">
           {agents.map((agent) => (
-            <div key={agent.name} className="list-row">
+            <button key={agent.name} className="list-row" onClick={() => onSelectAgent(agent)}>
               <Bot size={16} />
               <span>{agent.name}</span>
               <i className={agent.status === "online" ? "available" : "idle"} />
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -66,16 +81,16 @@ export function Sidebar({ models, agents }: { models: Model[]; agents: Agent[] }
         <h2>Modelos</h2>
         <div className="compact-list">
           {models.map((model) => (
-            <div key={model.id} className="list-row">
+            <button key={model.id} className="list-row" onClick={() => onSelectModel(model)}>
               <span className="model-initial">{model.name.slice(0, 2)}</span>
               <span>{model.name}</span>
               <i className={model.available ? "available" : "idle"} />
-            </div>
+            </button>
           ))}
-          <div className="list-row muted">
+          <button className="list-row muted" onClick={() => onNavigate("settings")}>
             <Plus size={16} />
             <span>Adicionar modelo</span>
-          </div>
+          </button>
         </div>
       </section>
 

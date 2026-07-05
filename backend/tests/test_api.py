@@ -73,3 +73,10 @@ def test_import_document(tmp_path):
     imported_path = BACKEND_ROOT.parent / data["path"]
     if imported_path.exists():
         imported_path.unlink()
+
+
+def test_quick_commands_work():
+    for command in ["/team", "/benchmark", "/graph build", "/semantic search", "/validate idea"]:
+        response = client.post("/api/command", json={"command": command})
+        assert response.status_code == 200
+        assert response.json()["output"]

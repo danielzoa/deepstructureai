@@ -14,7 +14,7 @@ const positions = [
   [25, 50]
 ];
 
-export function KnowledgeGraphCard({ nodes }: { nodes: Node[] }) {
+export function KnowledgeGraphCard({ nodes, onOpen }: { nodes: Node[]; onOpen: () => void }) {
   const visible = nodes.length ? nodes.slice(0, 9) : [];
   return (
     <section className="panel-card graph-card">
@@ -41,7 +41,7 @@ export function KnowledgeGraphCard({ nodes }: { nodes: Node[] }) {
           </div>
         ))}
       </div>
-      <button className="wide-button">
+      <button className="wide-button" onClick={onOpen}>
         <Network size={16} />
         Abrir grafo completo
       </button>
