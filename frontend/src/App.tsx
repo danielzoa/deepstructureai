@@ -81,6 +81,12 @@ export default function App() {
       } catch {
         window.localStorage.removeItem(chatStorageKey);
       }
+    } else {
+      api.getChatHistory().then((history) => {
+        if (history.messages?.length) {
+          setMessages(history.messages);
+        }
+      });
     }
   }, []);
 
@@ -199,9 +205,11 @@ export default function App() {
     URL.revokeObjectURL(url);
   }
 
-  function clearChat() {
+  async function clearChat() {
     setMessages([initialMessage]);
     window.localStorage.removeItem(chatStorageKey);
+    await api.clearChatHistory();
+    refreshAll();
   }
 
   function exportChat() {

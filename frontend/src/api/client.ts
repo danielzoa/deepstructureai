@@ -19,6 +19,7 @@ export type ChatMessage = {
   role: "assistant" | "user";
   content: string;
   meta?: string;
+  createdAt?: string;
 };
 
 const mockGraph = {
@@ -147,6 +148,18 @@ export const api = {
       routes: {},
       activeRoutes: {}
     }),
+  getChatHistory: () =>
+    request("/api/chat/history", undefined, {
+      messages: [] as ChatMessage[]
+    }),
+  clearChatHistory: () =>
+    request(
+      "/api/chat/history",
+      {
+        method: "DELETE"
+      },
+      { cleared: true }
+    ),
   testRouter: (mode = "chat", dryRun = true) =>
     request(
       "/api/router/test",

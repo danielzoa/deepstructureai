@@ -47,6 +47,76 @@ class DeepStructureService:
     def project_root(self):
         return PROJECT_ROOT
 
+    def state_db(self):
+        data_dir = PROJECT_ROOT / "data"
+        data_dir.mkdir(parents=True, exist_ok=True)
+        db_path = data_dir / "web_state.db"
+        with sqlite3.connect(db_path) as conn:
+            conn.execute(
+                """
+                create table if not exists chat_messages (
+                    id integer primary key autoincrement,
+                    role text not null,
+                    content text not null,
+                    meta text,
+                    created_at text not null
+                )
+                """
+            )
+            conn.execute(
+                """
+                create table if not exists web_activity (
+                    id integer primary key autoincrement,
+                    event text not null,
+                    created_at text not null
+                )
+                """
+            )
+        return db_path
+
+    def record_activity(self, event: str):
+        now = datetime.now().isoformat(timespec="seconds")
+        with sqlite3.connect(self.state_db()) as conn:
+            conn.execute(
+                "insert into web_activity (event, created_at) values (?, ?)",
+                (event[:240], now),
+            )
+
+    def record_chat_exchange(self, message: str, answer: str, model: str, mode: str):
+        now = datetime.now().isoformat(timespec="seconds")
+        with sqlite3.connect(self.state_db()) as conn:
+            conn.execute(
+                "insert into chat_messages (role, content, meta, created_at) values (?, ?, ?, ?)",
+                ("user", message, f"Modo: {mode}", now),
+            )
+            conn.execute(
+                "insert into chat_messages (role, content, meta, created_at) values (?, ?, ?, ?)",
+                ("assistant", answer, f"Modelo: {model}", now),
+            )
+        self.record_activity(f"Chat respondido por {model} no modo {mode}")
+
+    def chat_history(self, limit: int = 80):
+        with sqlite3.connect(self.state_db()) as conn:
+            rows = conn.execute(
+                """
+                select role, content, meta, created_at
+                from chat_messages
+                order by id desc
+                limit ?
+                """,
+                (max(1, min(limit, 200)),),
+            ).fetchall()
+        return [
+            {"role": role, "content": content, "meta": meta or "", "createdAt": created_at}
+            for role, content, meta, created_at in reversed(rows)
+        ]
+
+    def clear_chat_history(self):
+        with sqlite3.connect(self.state_db()) as conn:
+            conn.execute("delete from chat_messages")
+        self.record_activity("Histórico de chat limpo")
+        return {"cleared": True}
+
     def about(self):
         return {
             "name": "DeepStructureAI",
@@ -301,6 +371,19 @@ class DeepStructureService:
             counter += 1
 
     def activity(self):
+        try:
+            with sqlite3.connect(self.state_db()) as conn:
+                rows = conn.execute(
+                    "select event, created_at from web_activity order by id desc limit 8"
+                ).fetchall()
+            if rows:
+                return [
+                    {"time": created_at[11:16] if len(created_at) >= 16 else "", "event": event}
+                    for event, created_at in rows
+                ]
+        except Exception:
+            pass
+
         log_path = PROJECT_ROOT / "logs" / "agent.log"
         if log_path.exists():
             try:

@@ -8,6 +8,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.main import app
+from app.services.deepstructure_service import service
 
 
 client = TestClient(app)
@@ -37,12 +38,19 @@ def test_summary_ok():
 
 def test_chat_without_key_does_not_break(monkeypatch):
     monkeypatch.delenv("ZAI_API_KEY", raising=False)
+    monkeypatch.setattr(service, "record_chat_exchange", lambda *args, **kwargs: None)
     response = client.post(
         "/api/chat",
         json={"message": "Teste", "mode": "chat", "model": "glm"},
     )
     assert response.status_code == 200
     assert response.json()["answer"]
+
+
+def test_chat_history_endpoint():
+    history = client.get("/api/chat/history")
+    assert history.status_code == 200
+    assert "messages" in history.json()
 
 
 def test_graph_returns_nodes_and_edges():

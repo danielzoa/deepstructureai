@@ -31,6 +31,21 @@ class ChatResponse(BaseModel):
     warnings: list[str] = []
 
 
+class ChatHistoryMessage(BaseModel):
+    role: Literal["assistant", "user"]
+    content: str
+    meta: str = ""
+    createdAt: str = ""
+
+
+class ChatHistoryResponse(BaseModel):
+    messages: list[ChatHistoryMessage]
+
+
+class ClearChatResponse(BaseModel):
+    cleared: bool
+
+
 class RouterTestRequest(BaseModel):
     message: str = "Responda apenas: ok"
     mode: ChatMode = "chat"

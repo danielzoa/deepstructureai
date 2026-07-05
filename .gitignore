@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.log
 .env
+data/web_state.db
 data/*.db-shm
 data/*.db-wal
 logs/*.log
