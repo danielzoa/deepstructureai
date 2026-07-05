@@ -151,6 +151,16 @@ VITE_DEMO_MODE=false
 
 Faça um novo build/deploy do frontend para o site usar o backend real.
 
+## CI
+
+O arquivo `docs/github-actions-ci.yml` contém um workflow pronto para GitHub Actions com:
+
+- Testes do backend.
+- Build do frontend.
+- Build da imagem Docker.
+
+Para ativar, copie esse arquivo para `.github/workflows/ci.yml` usando uma conta/token com permissão `workflow` no GitHub.
+
 ## Mock/Demo
 
 - Chat retorna resposta demo quando nenhuma IA da rota está disponível ou todas falham.
