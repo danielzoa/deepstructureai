@@ -21,6 +21,7 @@ class ZAIModel(BaseModel):
         else:
             self.base_url = base_url or env_base_url or "https://api.z.ai/api/paas/v4"
             self.model_name = model_name or env_model or "GLM-5.2"
+        self.max_tokens = int(os.getenv("ZAI_MAX_TOKENS", "4096"))
         self.client = None
 
     @property
@@ -43,6 +44,7 @@ class ZAIModel(BaseModel):
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
+            max_tokens=self.max_tokens,
         )
 
         return response.choices[0].message.content or ""

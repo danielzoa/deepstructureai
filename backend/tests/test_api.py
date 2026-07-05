@@ -27,6 +27,7 @@ def test_zai_openrouter_key_uses_openrouter_defaults(monkeypatch):
     model = ZAIModel(api_key="sk-or-v1-test")
     assert model.base_url == "https://openrouter.ai/api/v1"
     assert model.model_name == "z-ai/glm-5.2"
+    assert model.max_tokens == 4096
 
 
 def test_readiness_ok():
