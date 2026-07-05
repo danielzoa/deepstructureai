@@ -8,11 +8,11 @@ const commands = ["/import_ntg", "/graph build", "/lab start", "/semantic search
 const modes = [
   ["auto", "Auto"],
   ["chat", "Chat"],
-  ["fast", "Rapido"],
+  ["fast", "Rápido"],
   ["document", "Documento"],
-  ["critic", "Critico"],
-  ["code", "Codigo"],
-  ["lab", "Laboratorio"],
+  ["critic", "Crítico"],
+  ["code", "Código"],
+  ["lab", "Laboratório"],
   ["offline", "Offline"]
 ];
 
@@ -61,7 +61,7 @@ export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onS
           <div className="mini-logo">DS</div>
           <div>
             <strong>DeepStructureAI</strong>
-            <span>Assistente de Pesquisa Cientifica</span>
+            <span>Assistente de Pesquisa Científica</span>
           </div>
           <div className="chat-tools">
             <button onClick={onExport} title="Exportar conversa" type="button">
@@ -106,7 +106,7 @@ export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onS
       </form>
 
       <div className="command-strip">
-        <span>Comandos rapidos:</span>
+        <span>Comandos rápidos:</span>
         {commands.map((command) => (
           <button key={command} onClick={() => onSend(command)}>
             {command}

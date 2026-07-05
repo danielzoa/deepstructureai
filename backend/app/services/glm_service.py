@@ -19,21 +19,21 @@ class GLMService:
 
     def generate(self, message: str, mode: str = "chat") -> str:
         if not self.configured:
-            raise RuntimeError("ZAI_API_KEY nao configurada.")
+            raise RuntimeError("ZAI_API_KEY não configurada.")
 
         from core.models.zai_model import ZAIModel
 
         system_prompt = (
-            "Voce e o DeepStructureAI, assistente de pesquisa cientifica em NTG. "
-            "Responda em portugues, com clareza, rigor e foco operacional."
+            "Você é o DeepStructureAI, assistente de pesquisa científica em NTG. "
+            "Responda em português, com clareza, rigor e foco operacional."
         )
         if mode == "critic":
             system_prompt += " Aponte riscos, falhas e contraexemplos relevantes."
         elif mode == "writer":
-            system_prompt += " Estruture a resposta como texto cientifico revisavel."
+            system_prompt += " Estruture a resposta como texto científico revisável."
         elif mode == "lab":
-            system_prompt += " Foque em hipoteses, evidencias, testes e proximos passos."
+            system_prompt += " Foque em hipóteses, evidências, testes e próximos passos."
         elif mode == "research":
-            system_prompt += " Foque em investigacao, fontes e conexoes conceituais."
+            system_prompt += " Foque em investigação, fontes e conexões conceituais."
 
         return ZAIModel(self.model_name, self.base_url).generate(system_prompt, message)

@@ -99,9 +99,9 @@ class DeepStructureService:
         return [
             {"name": "Planner", "role": "Planejamento", "status": "online"},
             {"name": "Researcher", "role": "Pesquisa", "status": "online"},
-            {"name": "Critic", "role": "Critica", "status": "standby"},
+            {"name": "Critic", "role": "Crítica", "status": "standby"},
             {"name": "Writer", "role": "Escrita", "status": "online"},
-            {"name": "Reviewer", "role": "Revisao", "status": "standby"},
+            {"name": "Reviewer", "role": "Revisão", "status": "standby"},
         ]
 
     def summary(self):
@@ -157,9 +157,9 @@ class DeepStructureService:
             "NTG",
             "Navier-Stokes 3D",
             "Vorticidade",
-            "Pressao Anisotropica",
-            "Nao Comutatividade",
-            "Materia Escura",
+            "Pressão Anisotrópica",
+            "Não Comutatividade",
+            "Matéria Escura",
             "Rigidez Espectral",
             "Energia",
             "Transporte",
@@ -178,10 +178,10 @@ class DeepStructureService:
 
     def memory(self):
         return [
-            {"name": "Memoria Semantica", "size": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db")},
-            {"name": "Memoria Cientifica", "size": _file_size_mb(PROJECT_ROOT / "data" / "scientific_memory.json")},
+            {"name": "Memória Semântica", "size": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db")},
+            {"name": "Memória Científica", "size": _file_size_mb(PROJECT_ROOT / "data" / "scientific_memory.json")},
             {"name": "Knowledge Graph", "size": _file_size_mb(PROJECT_ROOT / "data" / "knowledge_graph.db")},
-            {"name": "Laboratorio", "size": _file_size_mb(PROJECT_ROOT / "data" / "laboratory.db")},
+            {"name": "Laboratório", "size": _file_size_mb(PROJECT_ROOT / "data" / "laboratory.db")},
         ]
 
     def lab_status(self):
@@ -230,12 +230,12 @@ class DeepStructureService:
         safe_name = Path(name).name.strip()
         suffix = Path(safe_name).suffix.lower()
         if not safe_name or suffix not in self.allowed_document_suffixes:
-            raise ValueError("Tipo de documento nao permitido.")
+            raise ValueError("Tipo de documento não permitido.")
 
         try:
             content = base64.b64decode(content_base64, validate=True)
         except Exception as exc:
-            raise ValueError("Conteudo base64 invalido.") from exc
+            raise ValueError("Conteúdo base64 inválido.") from exc
 
         if len(content) > self.max_import_bytes:
             raise ValueError("Documento excede o limite de 10 MB.")
@@ -276,15 +276,15 @@ class DeepStructureService:
                 pass
         return [
             {"time": "10:45", "event": "Grafo atualizado"},
-            {"time": "10:44", "event": "Evidencia adicionada"},
-            {"time": "10:43", "event": "Pesquisa concluida"},
+            {"time": "10:44", "event": "Evidência adicionada"},
+            {"time": "10:43", "event": "Pesquisa concluída"},
             {"time": "10:42", "event": "PDF importado"},
         ]
 
     def run_command(self, command: str):
         normalized = command.strip().lower()
         if any(token in normalized for token in self.dangerous_tokens):
-            return {"output": "Comando bloqueado por seguranca.", "blocked": True, "warnings": ["dangerous_command"]}
+            return {"output": "Comando bloqueado por segurança.", "blocked": True, "warnings": ["dangerous_command"]}
         if normalized in {"/about", "about"}:
             return {"output": json.dumps(self.about(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
         if normalized in {"/health", "health"}:
@@ -321,18 +321,18 @@ class DeepStructureService:
             payload = {
                 "status": "ready",
                 "memorySizeMb": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db"),
-                "message": "Busca semantica conectada em modo resumo no MVP.",
+                "message": "Busca semântica conectada em modo resumo no MVP.",
             }
             return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": ["semantic_search_mock"]}
         if normalized in {"/validate idea", "validate idea"}:
             payload = {
                 "status": "ready",
                 "validator": "DeepSeek > GLM > Gemini > Ollama/mock",
-                "message": "Use o modo Critico ou Laboratorio para validar uma hipotese.",
+                "message": "Use o modo Crítico ou Laboratório para validar uma hipótese.",
             }
             return {"output": json.dumps(payload, ensure_ascii=False, indent=2), "blocked": False, "warnings": ["validator_hint"]}
         return {
-            "output": "Comando reconhecido no MVP. A execucao profunda sera conectada ao CLI em uma proxima etapa.",
+            "output": "Comando reconhecido no MVP. A execução profunda será conectada ao CLI em uma próxima etapa.",
             "blocked": False,
             "warnings": ["demo_command"],
         }

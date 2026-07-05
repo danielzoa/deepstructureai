@@ -17,9 +17,9 @@ const mockGraph = {
     { id: "ntg", label: "NTG" },
     { id: "navier", label: "Navier-Stokes 3D" },
     { id: "vorticidade", label: "Vorticidade" },
-    { id: "pressao", label: "Pressao Anisotropica" },
-    { id: "nao-comutatividade", label: "Nao Comutatividade" },
-    { id: "materia-escura", label: "Materia Escura" },
+    { id: "pressao", label: "Pressão Anisotrópica" },
+    { id: "nao-comutatividade", label: "Não Comutatividade" },
+    { id: "materia-escura", label: "Matéria Escura" },
     { id: "rigidez", label: "Rigidez Espectral" },
     { id: "energia", label: "Energia" },
     { id: "transporte", label: "Transporte" }
@@ -79,10 +79,10 @@ export const api = {
   getGraph: () => request("/api/graph", undefined, mockGraph),
   getMemory: () =>
     request("/api/memory", undefined, [
-      { name: "Memoria Semantica", size: 12.4 },
-      { name: "Memoria Cientifica", size: 8.7 },
+      { name: "Memória Semântica", size: 12.4 },
+      { name: "Memória Científica", size: 8.7 },
       { name: "Knowledge Graph", size: 15.2 },
-      { name: "Laboratorio", size: 6.1 }
+      { name: "Laboratório", size: 6.1 }
     ]),
   getLabStatus: () =>
     request("/api/lab/status", undefined, {
@@ -96,7 +96,7 @@ export const api = {
     request("/api/documents", undefined, [
       { name: "NTG.pdf", size: 245000 },
       { name: "calculos_ntg.tex", size: 18000 },
-      { name: "hipoteses.md", size: 12000 },
+      { name: "hipóteses.md", size: 12000 },
       { name: "enstrofia_ntg.tex", size: 9000 }
     ]),
   importDocument: (name: string, contentBase64: string) =>
@@ -116,8 +116,8 @@ export const api = {
   getActivity: () =>
     request("/api/activity", undefined, [
       { time: "10:45", event: "Grafo atualizado" },
-      { time: "10:44", event: "Evidencia adicionada" },
-      { time: "10:43", event: "Pesquisa concluida" },
+      { time: "10:44", event: "Evidência adicionada" },
+      { time: "10:43", event: "Pesquisa concluída" },
       { time: "10:42", event: "PDF importado" }
     ]),
   getRouterStatus: () =>

@@ -24,7 +24,7 @@ export function Topbar({ connected, onMenu, onRefresh, onSettings, onThemeToggle
         <button className="icon-button" onClick={onThemeToggle} title="Tema">
           <Sun size={19} />
         </button>
-        <button className="icon-button" onClick={onSettings} title="Configuracoes">
+        <button className="icon-button" onClick={onSettings} title="Configurações">
           <Settings size={19} />
         </button>
       </div>

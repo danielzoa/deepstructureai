@@ -17,12 +17,12 @@ export type ViewId = "chat" | "lab" | "memory" | "graph" | "articles" | "tools" 
 
 const nav = [
   ["chat", "Chat", MessageSquare],
-  ["lab", "Laboratorio", FlaskConical],
-  ["memory", "Memoria", BrainCircuit],
+  ["lab", "Laboratório", FlaskConical],
+  ["memory", "Memória", BrainCircuit],
   ["graph", "Grafo", Network],
   ["articles", "Artigos", GalleryHorizontal],
   ["tools", "Ferramentas", Wrench],
-  ["settings", "Configuracoes", Settings]
+  ["settings", "Configurações", Settings]
 ] as const;
 
 type Props = {
@@ -48,7 +48,7 @@ export function Sidebar({ models, agents, activeView, onNavigate, onSelectAgent,
       </div>
 
       <section>
-        <h2>Navegacao</h2>
+        <h2>Navegação</h2>
         <nav className="nav-list">
           {nav.map(([id, label, Icon]) => (
             <button

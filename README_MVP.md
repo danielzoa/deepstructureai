@@ -1,6 +1,6 @@
 # DeepStructureAI MVP Web
 
-DeepStructureAI agora tem um MVP web com backend FastAPI, frontend React/Vite e suporte configuravel ao GLM/Z.AI.
+DeepStructureAI agora tem um MVP web com backend FastAPI, frontend React/Vite e suporte configurável ao GLM/Z.AI.
 
 ## Instalar
 
@@ -31,7 +31,7 @@ OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1
 ```
 
-Sem alguma chave, o backend nao quebra: ele pula aquele modelo e segue a cadeia de fallback.
+Sem alguma chave, o backend não quebra: ele pula aquele modelo e segue a cadeia de fallback.
 
 ## Sinergia Multi-IA
 
@@ -55,7 +55,7 @@ Endpoints:
 
 ## Importar Documentos
 
-No frontend, use o botao de upload no card "Documentos recentes".
+No frontend, use o botão de upload no card "Documentos recentes".
 
 O backend aceita `.pdf`, `.tex`, `.md`, `.json` e `.txt`, com limite de 10 MB, e grava em:
 
@@ -97,7 +97,7 @@ git commit -m "MVP web DeepStructureAI with GLM support"
 gh repo create deepstructureai --private --source=. --remote=origin --push
 ```
 
-Se o `gh` nao estiver autenticado:
+Se o `gh` não estiver autenticado:
 
 ```bash
 git remote add origin URL_DO_REPOSITORIO
@@ -126,15 +126,15 @@ npx wrangler pages deploy dist --project-name deepstructureai
 
 ## Mock/Demo
 
-- Chat retorna resposta demo quando nenhuma IA da rota esta disponivel ou todas falham.
+- Chat retorna resposta demo quando nenhuma IA da rota está disponível ou todas falham.
 - Grafo usa `data/knowledge_graph.json` ou `output/graph/knowledge_graph.json`; se falhar, usa grafo NTG mockado.
-- Atividade usa `logs/agent.log`; se nao houver log legivel, usa eventos mockados.
-- Laboratorio e memorias usam arquivos reais para tamanho/status e completam lacunas com valores seguros.
+- Atividade usa `logs/agent.log`; se não houver log legível, usa eventos mockados.
+- Laboratório e memórias usam arquivos reais para tamanho/status e completam lacunas com valores seguros.
 
-## Proximos Passos
+## Próximos Passos
 
-- Hospedar o backend FastAPI em um servico Python.
+- Hospedar o backend FastAPI em um serviço Python.
 - Conectar comandos do `/command` ao dispatcher CLI com lista permitida.
 - Criar tela completa do grafo.
-- Adicionar upload/importacao de PDF pelo frontend.
-- Salvar historico de chat por sessao.
+- Adicionar upload/importação de PDF pelo frontend.
+- Salvar histórico de chat por sessão.

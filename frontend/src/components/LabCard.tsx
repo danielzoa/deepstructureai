@@ -11,17 +11,17 @@ type Lab = {
 export function LabCard({ lab, onOpen }: { lab: Lab; onOpen: () => void }) {
   return (
     <section className="panel-card lower-card">
-      <h2>Laboratorio ativo</h2>
+      <h2>Laboratório ativo</h2>
       <p className="subtle">Projeto Atual: {lab.project}</p>
       <div className="metric-list tight">
         <div className="metric-row">
           <FlaskConical size={17} />
-          <span>Hipotese</span>
+          <span>Hipótese</span>
           <small className="green">{lab.hypothesis}</small>
         </div>
         <div className="metric-row">
           <Microscope size={17} />
-          <span>Evidencias</span>
+          <span>Evidências</span>
           <small>{lab.evidenceCount} coletadas</small>
         </div>
         <div className="metric-row">
@@ -37,7 +37,7 @@ export function LabCard({ lab, onOpen }: { lab: Lab; onOpen: () => void }) {
           <strong>{lab.progress}%</strong>
         </div>
       </div>
-      <button className="link-button" onClick={onOpen}>Abrir laboratorio</button>
+      <button className="link-button" onClick={onOpen}>Abrir laboratório</button>
     </section>
   );
 }

@@ -12,11 +12,11 @@ export function SummaryCards({ summary }: { summary: Summary }) {
       <div className="summary-grid">
         <div>
           <strong>{summary.nodes}</strong>
-          <span>Nos</span>
+          <span>Nós</span>
         </div>
         <div>
           <strong>{summary.relations}</strong>
-          <span>Relacoes</span>
+          <span>Relações</span>
         </div>
         <div>
           <strong>{summary.clusters}</strong>

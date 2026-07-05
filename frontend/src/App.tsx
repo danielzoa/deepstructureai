@@ -26,7 +26,7 @@ type Summary = {
 const initialMessage: ChatMessage = {
   role: "assistant",
   content:
-    "Ola! Sou seu assistente de pesquisa cientifica. Como posso ajudar sua investigacao hoje?\n\nVoce pode importar PDFs, analisar conceitos, construir grafos de conhecimento, validar hipoteses e gerar relatorios.",
+    "Olá! Sou seu assistente de pesquisa científica. Como posso ajudar sua investigação hoje?\n\nVocê pode importar PDFs, analisar conceitos, construir grafos de conhecimento, validar hipóteses e gerar relatórios.",
   meta: "DeepStructureAI"
 };
 
@@ -217,7 +217,7 @@ export default function App() {
 
   function selectModel(model: any) {
     setActiveView("settings");
-    setToolOutput(`${model.name}: ${model.available ? "disponivel" : "indisponivel ou sem chave configurada"}`);
+    setToolOutput(`${model.name}: ${model.available ? "disponível" : "indisponível ou sem chave configurada"}`);
   }
 
   function renderMainView() {
@@ -251,30 +251,30 @@ export default function App() {
     return (
       <div className="detail-layout">
         {activeView === "lab" && (
-          <DetailPanel title="Laboratorio" description="Status do laboratorio ativo e comandos de pesquisa.">
+          <DetailPanel title="Laboratório" description="Status do laboratório ativo e comandos de pesquisa.">
             <MetricGrid items={[
               ["Projeto", lab.project],
-              ["Hipotese", lab.hypothesis],
-              ["Evidencias", `${lab.evidenceCount}`],
+              ["Hipótese", lab.hypothesis],
+              ["Evidências", `${lab.evidenceCount}`],
               ["Testes", `${lab.testsCount}`],
               ["Progresso", `${lab.progress}%`]
             ]} />
-            <button className="wide-button" onClick={() => runTool("/lab start")}>Atualizar laboratorio</button>
+            <button className="wide-button" onClick={() => runTool("/lab start")}>Atualizar laboratório</button>
           </DetailPanel>
         )}
 
         {activeView === "memory" && (
-          <DetailPanel title="Memoria" description="Resumo das memorias usadas pelo DeepStructureAI.">
-            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar memorias..." />
+          <DetailPanel title="Memória" description="Resumo das memórias usadas pelo DeepStructureAI.">
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar memórias..." />
             <DataList items={filterRows(memory.map((item) => [item.name, `${item.size} MB`]))} />
-            <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semantica</button>
+            <button className="wide-button" onClick={() => runTool("/semantic search")}>Testar busca semântica</button>
           </DetailPanel>
         )}
 
         {activeView === "graph" && (
-          <DetailPanel title="Grafo de Conhecimento" description="Nos e relacoes carregados do knowledge graph.">
-            <MetricGrid items={[["Nos", `${graph.nodes.length}`], ["Relacoes", `${graph.edges.length}`], ["Clusters", `${summary.clusters}`], ["Conceitos", `${summary.concepts}`]]} />
-            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar nos do grafo..." />
+          <DetailPanel title="Grafo de Conhecimento" description="Nós e relações carregados do knowledge graph.">
+            <MetricGrid items={[["Nós", `${graph.nodes.length}`], ["Relações", `${graph.edges.length}`], ["Clusters", `${summary.clusters}`], ["Conceitos", `${summary.concepts}`]]} />
+            <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar nós do grafo..." />
             <DataList items={filterRows(graph.nodes.map((node) => [node.label || node.id, node.id])).slice(0, 80)} />
             <button className="wide-button" onClick={() => runTool("/graph build")}>Recalcular resumo do grafo</button>
           </DetailPanel>
@@ -300,7 +300,7 @@ export default function App() {
         )}
 
         {activeView === "settings" && (
-          <DetailPanel title="Configuracoes" description="Estado de modelos, rotas e ambiente local.">
+          <DetailPanel title="Configurações" description="Estado de modelos, rotas e ambiente local.">
             <MetricGrid items={[
               ["API", (health as any).status || "demo"],
               ["GLM", (health as any).glmConfigured ? "configurado" : "sem chave"],
@@ -308,7 +308,7 @@ export default function App() {
               ["Tema", darkMode ? "escuro" : "claro"]
             ]} />
             <h3>Modelos</h3>
-            <DataList items={models.map((model) => [model.name, model.available ? "disponivel" : "indisponivel"])} />
+            <DataList items={models.map((model) => [model.name, model.available ? "disponível" : "indisponível"])} />
             <h3>Rotas ativas</h3>
             <pre className="output-box">{JSON.stringify(routerStatus.activeRoutes || {}, null, 2)}</pre>
           </DetailPanel>

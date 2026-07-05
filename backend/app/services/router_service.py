@@ -144,10 +144,10 @@ class MultiAIService:
 
     def role_for(self, name):
         return {
-            "glm": "principal, planejamento, escrita, pesquisa e coordenacao",
+            "glm": "principal, planejamento, escrita, pesquisa e coordenação",
             "gemini": "documentos longos, PDFs, contexto grande e multimodal futuro",
-            "groq": "respostas rapidas, comandos, status e triagem",
-            "deepseek": "critica, validacao logica, matematica e revisao",
+            "groq": "respostas rápidas, comandos, status e triagem",
+            "deepseek": "crítica, validação lógica, matemática e revisão",
             "ollama": "modo local/offline e fallback privado",
         }.get(name, "")
 
@@ -200,16 +200,16 @@ class MultiAIService:
 
     def system_prompt(self, mode):
         base = (
-            "Voce e o DeepStructureAI, assistente de pesquisa cientifica em NTG. "
-            "Responda em portugues, com clareza, rigor e foco operacional."
+            "Você é o DeepStructureAI, assistente de pesquisa científica em NTG. "
+            "Responda em português, com clareza, rigor e foco operacional."
         )
         prompts = {
-            "fast": " Seja breve, direto e util para triagem ou status.",
-            "document": " Priorize contexto longo, documentos, PDFs e explicacoes estruturadas.",
-            "critic": " Atue como revisor critico: encontre falhas, riscos e contraexemplos.",
-            "code": " Foque em analise de codigo, riscos, testes e mudancas pequenas.",
-            "lab": " Foque em hipoteses, evidencias, testes, progresso e proximos passos.",
-            "offline": " Responda em modo local/privado, sem depender de servicos externos.",
+            "fast": " Seja breve, direto e útil para triagem ou status.",
+            "document": " Priorize contexto longo, documentos, PDFs e explicações estruturadas.",
+            "critic": " Atue como revisor crítico: encontre falhas, riscos e contraexemplos.",
+            "code": " Foque em análise de código, riscos, testes e mudanças pequenas.",
+            "lab": " Foque em hipóteses, evidências, testes, progresso e próximos passos.",
+            "offline": " Responda em modo local/privado, sem depender de serviços externos.",
         }
         return base + prompts.get(mode, "")
 

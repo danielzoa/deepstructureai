@@ -6,7 +6,7 @@ const icons = [Database, BrainCircuit, Network, FlaskConical];
 export function MemoryCard({ items, onOpen }: { items: Item[]; onOpen: () => void }) {
   return (
     <section className="panel-card">
-      <h2>Memoria</h2>
+      <h2>Memória</h2>
       <div className="metric-list">
         {items.map((item, index) => {
           const Icon = icons[index % icons.length];
