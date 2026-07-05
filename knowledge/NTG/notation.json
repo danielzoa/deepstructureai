@@ -1,0 +1,37 @@
+{
+  "alpha": {
+    "symbol": "α",
+    "meaning": "Parâmetro principal utilizado na NTG para estudar regimes de regularidade."
+  },
+
+  "beta": {
+    "symbol": "β",
+    "meaning": "Parâmetro auxiliar de acoplamento entre mecanismos da NTG."
+  },
+
+  "P0": {
+    "symbol": "P₀",
+    "meaning": "Componente anisotrópica da pressão."
+  },
+
+  "DeltaR": {
+    "symbol": "ΔR",
+    "meaning": "Indicador da resposta do sistema quanto à regularidade."
+  },
+
+  "stretching": {
+    "meaning": "Mecanismo de alongamento da vorticidade, considerado o principal candidato à formação de singularidades."
+  },
+
+  "regularity": {
+    "meaning": "Existência de soluções suaves globais para Navier-Stokes."
+  },
+
+  "blowup": {
+    "meaning": "Possível perda de regularidade em tempo finito."
+  },
+
+  "worst_case": {
+    "meaning": "Metodologia de testar primeiro o cenário mais desfavorável antes de aceitar uma hipótese."
+  }
+}

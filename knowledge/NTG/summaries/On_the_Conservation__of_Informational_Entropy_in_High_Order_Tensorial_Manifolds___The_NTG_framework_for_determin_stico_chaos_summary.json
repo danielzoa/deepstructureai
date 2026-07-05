@@ -1,0 +1,201 @@
+{
+  "title": "On the Conservation of Informational Entropy in Higher-Order Tensorial Manifolds: The NTG Framework for Deterministic Chaos",
+  "summary": "O documento propõe o framework Non-linear Tensorial Gradient (NTG) para reinterpretar dissipação em sistemas dinâmicos como transferência isométrica de informação para variedades tensoriais de ordem superior. Introduz operadores chamados Gaspar Operators, em especial um gradiente tensorial não linear e uma divergência restaurativa, para acoplar um fluxo primário a uma variedade de memória. A tese central é que, no espaço de fase estendido, a entropia/informação total e o volume de fase seriam conservados, permitindo reversibilidade temporal e mitigando instabilidades numéricas. O texto aplica a formulação ao sistema de Lorenz, definindo o sistema Lorenz-Gaspar, e às equações de Navier-Stokes, definindo um sistema Navier-Stokes-Gaspar com uma variável secundária de memória. Também discute uma aplicação a fluxo de Taylor-Couette e afirma que bifurcações e turbulência poderiam ser descritas por transferência coerente de energia para a camada de memória.",
+  "definitions": [
+    {
+      "name": "Non-linear Tensorial Gradient Framework",
+      "abbreviation": "NTG",
+      "description": "Extensão algébrica/geometrizada de sistemas dissipativos em que termos dissipativos são interpretados como transferência de informação para variedades tensoriais hierárquicas."
+    },
+    {
+      "name": "Gaspar Memory Operator",
+      "symbol": "∇τ",
+      "description": "Operador definido como um mapeamento de TM para T^(2)M, capturando a taxa de dissipação de informação em um tensor de memória de segunda ordem u^(2).",
+      "formula": "∇τ ⊗ u^(1) := lim_{δτ→0} L_v u^(1) / δτ"
+    },
+    {
+      "name": "Memory manifold",
+      "symbol": "u^(2)",
+      "description": "Camada secundária ou reservatório informacional que armazena a contribuição associada à dissipação do fluxo primário.",
+      "evolution": "du^(2)/dt = -μ Δu^(1) - γu^(2)"
+    },
+    {
+      "name": "Adiabatic Information Theorem",
+      "description": "Afirma que, sob acoplamento NTG ideal, a divergência total no espaço de fase estendido Ψ = (u^(1), u^(2)) se anula, implicando conservação de volume de fase e reversibilidade global.",
+      "formula": "div Ψ(dot Ψ) = Σ_i [∂dot u_i^(1)/∂u_i^(1) + ∂dot u_i^(2)/∂u_i^(2)] = 0"
+    },
+    {
+      "name": "Gaspar Divergence",
+      "symbol": "divτ",
+      "description": "Operador restaurativo que reinjeta informação dissipada no fluxo primário."
+    },
+    {
+      "name": "Causal Shielding",
+      "description": "Mecanismo atribuído ao NTG pelo qual a informação dissipada é protegida na variedade de memória, supostamente evitando singularidades numéricas e mantendo expoentes de Lyapunov médios não positivos no sistema estendido."
+    },
+    {
+      "name": "Gaspar Connection",
+      "symbol": "Γτ",
+      "description": "Conexão geométrica introduzida para que a derivada covariante do campo de velocidade estendido Ψ = (u^(1), u^(2)) se anule."
+    },
+    {
+      "name": "NTG operator with curvature complement",
+      "description": "Forma geométrica do operador NTG como complemento ortogonal ao gradiente dissipativo, envolvendo um tensor de curvatura antissimétrico.",
+      "formula": "∇τ ⊗ u_i^(1) := ∇_j(u_i^(1)) + Ω_ij"
+    },
+    {
+      "name": "Gaspar-Bianchi Identity",
+      "description": "Identidade cíclica satisfeita pelo tensor de curvatura antissimétrico Ω_ij.",
+      "formula": "∇_k Ω_ij + ∇_i Ω_jk + ∇_j Ω_ki = 0"
+    },
+    {
+      "name": "Lorenz-Gaspar System",
+      "abbreviation": "LG",
+      "description": "Extensão do sistema de Lorenz-63 com variáveis adicionais de memória u_x, u_y, u_z acopladas ao fluxo primário.",
+      "equations": [
+        "dx/dt = σ(y - x) + λu_x",
+        "dy/dt = x(ρ - z) - y + λu_y",
+        "dz/dt = xy - βz + λu_z",
+        "du_x/dt = -σ(y - x) - γu_x",
+        "du_y/dt = -[x(ρ - z) - y] - γu_y",
+        "du_z/dt = -[xy - βz] - γu_z"
+      ]
+    },
+    {
+      "name": "Gaspar Reversal Test",
+      "description": "Teste numérico em que o sistema é integrado até um tempo final e, em seguida, inverte-se o sinal da variável de memória u_i para verificar recuperação das condições iniciais."
+    },
+    {
+      "name": "Navier-Stokes-Gaspar Equations",
+      "abbreviation": "NSG",
+      "description": "Extensão das equações de Navier-Stokes incompressíveis com uma velocidade secundária u^(2) que codifica escalas subgrade ou informação associada à dissipação viscosa.",
+      "equations": [
+        "∂u^(1)/∂t + (u^(1) · ∇)u^(1) = -(1/ρ)∇p + ν∇²u^(1) + G(u^(2))",
+        "∂u^(2)/∂t + (u^(1) · ∇)u^(2) = -ν∇²u^(1) - γu^(2)"
+      ]
+    },
+    {
+      "name": "Gaspar-Reynolds Tensor",
+      "symbol": "τ_ij^(2)",
+      "description": "Tensor de segunda ordem associado à manifestação da tensão de cisalhamento na variedade de memória."
+    },
+    {
+      "name": "Total enstrophy",
+      "symbol": "Z_total",
+      "description": "Soma das enstrofias das variáveis primária e secundária.",
+      "formula": "Z_total = ∫_Ω |∇ × u^(1)|² dΩ + ∫_Ω |∇ × u^(2)|² dΩ"
+    },
+    {
+      "name": "Gaspar Bifurcation",
+      "description": "Fenômeno descrito para fluxo Taylor-Couette no qual a instabilidade da componente laminar primária é acompanhada pela formação coerente de uma componente de vórtice na variável de memória.",
+      "formula": "u_total = u_laminar^(1) + u_vortex^(2)"
+    }
+  ],
+  "hypotheses": [
+    {
+      "statement": "A dissipação clássica, como viscosidade ou ruído, pode ser reinterpretada como projeção de fluxos determinísticos de dimensão superior sobre uma variedade de ordem inferior."
+    },
+    {
+      "statement": "A informação aparentemente perdida em sistemas caóticos reside em correlações de ordem superior armazenadas em uma variedade de memória."
+    },
+    {
+      "statement": "Sob acoplamento NTG ideal e no limite γ → 0, o espaço de fase estendido possui divergência nula e conserva volume, em analogia ao teorema de Liouville."
+    },
+    {
+      "statement": "O acoplamento entre u^(1) e u^(2) forma uma estrutura hamiltoniana no fibrado cotangente T*M, com forma simplética ω = du^(1) ∧ du^(2) invariante sob o fluxo."
+    },
+    {
+      "statement": "No sistema Lorenz-Gaspar, para λ = 1 e γ → 0, as trajetórias permanecem limitadas em um subconjunto compacto de R^6 e o determinante jacobiano permanece unitário para t > 0."
+    },
+    {
+      "statement": "A inversão das variáveis de memória no sistema Lorenz-Gaspar permitiria recuperar condições iniciais além do horizonte de Lyapunov."
+    },
+    {
+      "statement": "No framework NSG, a energia dissipada pela viscosidade em escoamentos turbulentos não é perdida como calor, mas codificada em uma velocidade secundária u^(2)."
+    },
+    {
+      "statement": "No limite de acoplamento ideal γ → 0, a enstrofia total Z_total funcionaria como funcional de Lyapunov e impediria crescimento singular dos gradientes em Navier-Stokes."
+    },
+    {
+      "statement": "Em fluxo Taylor-Couette, a transição laminar-vórtice poderia ser descrita por decomposição entre fluxo primário laminar e fluxo secundário de memória/vórtice."
+    }
+  ],
+  "notation": {
+    "M": "Variedade diferenciável n-dimensional que representa o espaço de estados.",
+    "TM": "Fibrado tangente de M.",
+    "T^(2)M": "Variedade ou fibrado tensorial de segunda ordem associado à memória.",
+    "T*M": "Fibrado cotangente de M.",
+    "u^(1)": "Fluxo, velocidade ou variável primária do sistema.",
+    "u^(2)": "Tensor ou velocidade secundária de memória.",
+    "Ψ": "Estado estendido, Ψ = (u^(1), u^(2)).",
+    "F": "Campo vetorial não linear clássico.",
+    "μ": "Coeficiente de viscosidade ou dissipação no modelo genérico.",
+    "ν": "Viscosidade cinemática nas equações de Navier-Stokes.",
+    "γ": "Coeficiente de decaimento ou amortecimento da variável de memória.",
+    "λ": "Parâmetro de acoplamento entre fluxo primário e reservatório informacional.",
+    "Δ": "Operador Laplaciano.",
+    "∇": "Derivada covariante ou operador gradiente.",
+    "∇τ": "Gradiente tensorial não linear, ou Gaspar Memory Operator.",
+    "divτ": "Divergência de Gaspar, operador restaurativo.",
+    "L_v": "Derivada de Lie ao longo do fluxo v.",
+    "g_ij": "Tensor métrico riemanniano.",
+    "ω": "Forma de volume ou forma simplética, dependendo do contexto.",
+    "Ω_ij": "Tensor de curvatura antissimétrico na formulação NTG.",
+    "Γτ": "Conexão de Gaspar.",
+    "σ": "Parâmetro de Prandtl no sistema de Lorenz.",
+    "ρ": "Parâmetro de Rayleigh no sistema de Lorenz.",
+    "β": "Parâmetro geométrico/dissipativo do sistema de Lorenz.",
+    "x, y, z": "Variáveis primárias do sistema de Lorenz.",
+    "u_x, u_y, u_z": "Variáveis de memória do sistema Lorenz-Gaspar.",
+    "J_LG": "Jacobiano do sistema Lorenz-Gaspar.",
+    "A": "Linearização local do campo vetorial de Lorenz.",
+    "I": "Matriz identidade.",
+    "V(Ψ)": "Funcional de energia do estado estendido, V = 1/2(||u^(1)||² + ||u^(2)||²).",
+    "G(u^(2))": "Operador restaurativo de Gaspar nas equações NSG.",
+    "ρ fluid": "Densidade do fluido nas equações de Navier-Stokes.",
+    "p": "Pressão do fluido.",
+    "Re": "Número de Reynolds.",
+    "η": "Escala de Kolmogorov ou razão de raios em Taylor-Couette, conforme o contexto.",
+    "ω^(1)": "Vorticidade associada a u^(1).",
+    "ω^(2)": "Vorticidade associada a u^(2).",
+    "Z_total": "Enstrofia total do sistema estendido.",
+    "R_in": "Raio do cilindro interno no fluxo Taylor-Couette.",
+    "R_out": "Raio do cilindro externo no fluxo Taylor-Couette.",
+    "Ω": "Domínio espacial de integração ou velocidade angular, dependendo do contexto."
+  },
+  "open_questions": [
+    {
+      "question": "A conservação de entropia/informação total no espaço de fase estendido pode ser demonstrada rigorosamente para sistemas dissipativos gerais, além dos exemplos formulados?"
+    },
+    {
+      "question": "Quais condições matemáticas garantem que o jacobiano estendido do sistema NTG seja de fato antissimétrico ou tenha divergência nula?"
+    },
+    {
+      "question": "A reversibilidade temporal observada no teste Lorenz-Gaspar é robusta sob erro de arredondamento, ruído, discretização e diferentes integradores numéricos?"
+    },
+    {
+      "question": "O sistema Lorenz-Gaspar preserva propriedades estatísticas do atrator de Lorenz original ou define uma dinâmica qualitativamente diferente em R^6?"
+    },
+    {
+      "question": "A afirmação de expoentes de Lyapunov médios não positivos no sistema estendido pode ser verificada analiticamente e numericamente?"
+    },
+    {
+      "question": "Como escolher de forma não arbitrária os parâmetros λ e γ e o operador restaurativo G(u^(2)) em aplicações físicas?"
+    },
+    {
+      "question": "As equações Navier-Stokes-Gaspar possuem existência, unicidade e regularidade global em três dimensões sob condições de contorno fisicamente relevantes?"
+    },
+    {
+      "question": "A proposta NSG resolve efetivamente o problema de suavidade de Navier-Stokes em R^3 ou apenas introduz uma dinâmica estendida distinta da formulação clássica?"
+    },
+    {
+      "question": "A conservação da enstrofia total Z_total é compatível com cascatas turbulentas, dissipação física e produção de calor observadas experimentalmente?"
+    },
+    {
+      "question": "A bifurcação de Gaspar em fluxo Taylor-Couette pode ser validada quantitativamente contra dados experimentais e simulações DNS/LES tradicionais?"
+    }
+  ],
+  "source_file": "On_the_Conservation__of_Informational_Entropy_in_High_Order_Tensorial_Manifolds___The_NTG_framework_for_determinístico_chaos.pdf",
+  "sha256": "39de85252a127581daef7a0dd8eede471d9aa671d3cfc96640126f128cc94048",
+  "imported_at": "2026-06-30T00:18:09.583055+00:00"
+}

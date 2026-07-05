@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+.env
+data/*.db-shm
+data/*.db-wal
+logs/*.log
+frontend/node_modules/
+frontend/dist/
+frontend/.npm-cache/
+frontend/tsconfig.tsbuildinfo
+backend/.venv/
+.pytest_cache/

@@ -1,0 +1,44 @@
+{
+  "hypotheses": {
+    "H1": {
+      "id": "H1",
+      "title": "P0 pode controlar parcialmente o stretching de vorticidade em Navier-Dtokes 3D.",
+      "description": "P0 pode controlar parcialmente o stretching de vorticidade em Navier-Dtokes 3D.",
+      "project": "Geral",
+      "status": "active",
+      "created_at": "2026-07-02 01:42:41",
+      "evidence": [],
+      "counterpoints": [],
+      "related_papers": [],
+      "next_steps": []
+    },
+    "H2": {
+      "id": "H2",
+      "title": "P0 pode controlar parcialmente o stretching de vorticidade.",
+      "description": "P0 pode controlar parcialmente o stretching de vorticidade.",
+      "project": "Geral",
+      "status": "active",
+      "confidence": null,
+      "created_at": "2026-07-02 01:53:25",
+      "updated_at": "2026-07-02 01:53:25",
+      "evidence": [],
+      "counterpoints": [],
+      "related_papers": [],
+      "experiments": [],
+      "dependencies": [],
+      "next_steps": [],
+      "history": []
+    }
+  },
+  "experiments": {},
+  "papers": {},
+  "decisions": {},
+  "open_questions": {
+    "O1": {
+      "question": "Qual estimativa cr´tica conecta P0 ao termo omega dot s omega?",
+      "project": "Geral",
+      "created_at": "2026-07-02 01:44:23",
+      "status": "open"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "id": "session_0002",
+  "title": "Teste AutoLog",
+  "project": "NTG",
+  "objective": "Verificar registro automático",
+  "team": {
+    "coordinator": {
+      "model": "ollama",
+      "goal": "Organizar a análise e produzir uma estratégia."
+    },
+    "reasoner": {
+      "model": "ollama",
+      "goal": "Construir raciocínio lógico e matemático."
+    },
+    "reviewer": {
+      "model": "ollama",
+      "goal": "Encontrar falhas, lacunas e riscos."
+    },
+    "coder": {
+      "model": "ollama",
+      "goal": "Escrever, revisar e depurar código."
+    },
+    "explainer": {
+      "model": "ollama",
+      "goal": "Explicar ideias de forma clara e intuitiva."
+    }
+  },
+  "status": "running",
+  "started_at": "2026-07-04 14:35:57",
+  "finished_at": null,
+  "events": [
+    {
+      "time": "2026-07-04 14:35:57",
+      "type": "session_started",
+      "content": "Sessão iniciada: Teste AutoLog"
+    },
+    {
+      "time": "2026-07-04 14:37:02",
+      "type": "consensus",
+      "content": "Pergunta: A hipótese H1 é plausível?"
+    },
+    {
+      "time": "2026-07-04 14:37:08",
+      "type": "knowledge_graph",
+      "content": "Nó criado: HTeste"
+    },
+    {
+      "time": "2026-07-04 14:37:20",
+      "type": "knowledge_graph",
+      "content": "Relação criada: HTeste --usa--> P0"
+    },
+    {
+      "time": "2026-07-04 16:58:16",
+      "type": "consensus",
+      "content": "Pergunta: A hipótese H1 baseada em P0 pode controlar o stretching de vorticidade em Navier-Stokes 3D?"
+    },
+    {
+      "time": "2026-07-04 17:23:58",
+      "type": "consensus",
+      "content": "Pergunta: A hipótese H1 baseada em P0 pode controlar o stretching de vorticidade em Navier-Stokes 3D?"
+    },
+    {
+      "time": "2026-07-04 18:05:03",
+      "type": "consensus",
+      "content": "Pergunta: Explique o que é um qubit"
+    }
+  ]
+}

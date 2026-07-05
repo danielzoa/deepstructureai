@@ -1,0 +1,262 @@
+{
+  "title": "Space-Time as a Controller: Resolving 3D Navier-Stokes Regularity and Dark Matter via Viscoelastic NTG",
+  "summary": {
+    "core_claim": "O documento propõe acoplar as equações de Navier-Stokes 3D a uma geometria tensorial não comutativa dinâmica, na qual a escala fundamental de não comutatividade, Θ, responde à vorticidade local do fluido.",
+    "navier_stokes_claim": "A tese central é que o crescimento da enstrofia aumenta Θ, o que eleva uma viscosidade efetiva ν_eff e introduz dissipação superlinear capaz de impedir o blow-up associado ao termo de estiramento de vórtices.",
+    "geometric_model": "O espaço-tempo é modelado como um meio viscoelástico com relaxação, amortecimento e histerese, descrito por uma equação dinâmica para Θ forçada pelo quadrado da vorticidade.",
+    "regularity_argument": "O documento argumenta que, se a dissipação efetiva crescer mais rapidamente que o termo não linear de enstrofia, então a norma H1 da velocidade permanece limitada globalmente, implicando regularidade suave via critérios do tipo Ladyzhenskaya-Prodi-Serrin.",
+    "cosmology_claim": "A histerese geométrica residual é proposta como uma explicação para efeitos atribuídos à matéria escura, interpretando-os como tensões geométricas remanescentes de turbulência primordial.",
+    "dark_matter_claim": "O tensor residual de energia-momento geométrico, com memória temporal da vorticidade passada, produziria uma contribuição adicional ao potencial gravitacional, mimetizando halos de matéria escura e curvas de rotação galácticas planas.",
+    "status": "As alegações são apresentadas como uma estrutura teórica especulativa; o documento não fornece uma demonstração matemática rigorosa completa nem validação observacional quantitativa."
+  },
+  "definitions": [
+    {
+      "term": "NTG",
+      "name": "Non-commutative Tensorial Geometry",
+      "definition": "Estrutura geométrica na qual as coordenadas do espaço-tempo satisfazem uma relação de não comutatividade dependente de posição e tempo."
+    },
+    {
+      "term": "Θ^{μν}(x,t)",
+      "definition": "Tensor ou escala de não comutatividade dinâmica que define uma área fundamental efetiva do espaço-tempo e responde à densidade de energia-momento ou à vorticidade do fluido."
+    },
+    {
+      "term": "Θ_P",
+      "definition": "Escala de referência associada à área de Planck, usada como valor de equilíbrio para Θ."
+    },
+    {
+      "term": "ν_eff",
+      "definition": "Viscosidade efetiva emergente no modelo NTG, aumentada pelo crescimento da escala geométrica Θ."
+    },
+    {
+      "term": "Enstrofia",
+      "definition": "Quantidade associada à intensidade da vorticidade ou ao quadrado da norma H1 do campo de velocidade; no documento é definida como E(t) = 1/2 ||∇u||^2_{L2}."
+    },
+    {
+      "term": "Vorticidade",
+      "definition": "Rotacional do campo de velocidade, Ω = ∇ × u."
+    },
+    {
+      "term": "Histerese geométrica",
+      "definition": "Atraso na resposta da variável geométrica Θ à evolução da vorticidade, causado pelo termo dissipativo/amortecido na equação dinâmica de Θ."
+    },
+    {
+      "term": "Tensão geométrica residual",
+      "definition": "Energia ou tensão armazenada no espaço-tempo devido à relaxação incompleta de Θ após episódios turbulentos intensos."
+    },
+    {
+      "term": "Tensor residual geométrico de energia-momento",
+      "definition": "Tensor T^{geom}_{μν} construído como uma integral temporal com núcleo de memória da vorticidade passada, proposto como fonte gravitacional efetiva."
+    },
+    {
+      "term": "Blow-up",
+      "definition": "Divergência em tempo finito de alguma norma relevante da solução das equações de Navier-Stokes, como a enstrofia."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "O espaço-tempo não é um fundo euclidiano estático, mas um meio geométrico dinâmico capaz de responder à concentração local de energia e vorticidade."
+    },
+    {
+      "id": "H2",
+      "statement": "As coordenadas satisfazem uma relação não comutativa [x^μ, x^ν] = i Θ^{μν}(x,t), com Θ dinâmico e não constante."
+    },
+    {
+      "id": "H3",
+      "statement": "O aumento da escala Θ eleva a viscosidade efetiva do fluido segundo uma relação do tipo ν_eff = ν_0 (1 + λ Θ/Θ_P)."
+    },
+    {
+      "id": "H4",
+      "statement": "A evolução de Θ é governada por uma equação viscoelástica de segunda ordem forçada pela vorticidade: τ_rel Θ¨ + η Θ˙ + m^2(Θ - Θ_P) = α(Re) ||Ω||^2."
+    },
+    {
+      "id": "H5",
+      "statement": "Quando a enstrofia E(t) cresce, Θ cresce de modo suficiente para produzir dissipação superlinear."
+    },
+    {
+      "id": "H6",
+      "statement": "Para acoplamento λ suficientemente grande, a dissipação efetiva cresce como O(E(t)^k) com k > 3, dominando o termo não linear que poderia levar a blow-up."
+    },
+    {
+      "id": "H7",
+      "statement": "A limitação uniforme da enstrofia, sup_{t∈[0,∞)} E(t) ≤ M < ∞, implicaria regularidade global suave do campo de velocidade."
+    },
+    {
+      "id": "H8",
+      "statement": "A histerese de Θ armazena energia geométrica residual após a dissipação de fluxos turbulentos primordiais."
+    },
+    {
+      "id": "H9",
+      "statement": "A tensão geométrica residual pode atuar gravitacionalmente como matéria escura efetiva."
+    },
+    {
+      "id": "H10",
+      "statement": "Curvas de rotação galácticas planas poderiam ser explicadas por um potencial efetivo Φ_eff = Φ_Newton + Φ_NTG."
+    },
+    {
+      "id": "H11",
+      "statement": "A relação de Tully-Fisher poderia emergir como limite de saturação de um laço de realimentação geométrico."
+    }
+  ],
+  "notation": [
+    {
+      "symbol": "x^μ, x^ν",
+      "meaning": "Coordenadas espaço-temporais."
+    },
+    {
+      "symbol": "[x^μ, x^ν]",
+      "meaning": "Comutador entre coordenadas."
+    },
+    {
+      "symbol": "Θ^{μν}(x,t)",
+      "meaning": "Tensor dinâmico de não comutatividade."
+    },
+    {
+      "symbol": "Θ",
+      "meaning": "Escala efetiva de não comutatividade ou variável geométrica dinâmica."
+    },
+    {
+      "symbol": "Θ_P",
+      "meaning": "Escala de Planck usada como referência/equilíbrio."
+    },
+    {
+      "symbol": "u",
+      "meaning": "Campo de velocidade do fluido."
+    },
+    {
+      "symbol": "P",
+      "meaning": "Pressão."
+    },
+    {
+      "symbol": "ρ",
+      "meaning": "Densidade do fluido."
+    },
+    {
+      "symbol": "ν_0",
+      "meaning": "Viscosidade cinemática de referência."
+    },
+    {
+      "symbol": "ν_eff(Θ)",
+      "meaning": "Viscosidade efetiva dependente da variável geométrica Θ."
+    },
+    {
+      "symbol": "λ",
+      "meaning": "Constante de acoplamento adimensional entre geometria e dissipação."
+    },
+    {
+      "symbol": "Ω",
+      "meaning": "Vorticidade, Ω = ∇ × u."
+    },
+    {
+      "symbol": "E(t)",
+      "meaning": "Enstrofia, E(t) = 1/2 ||∇u||^2_{L2}."
+    },
+    {
+      "symbol": "τ_rel",
+      "meaning": "Tempo característico de relaxação do campo geométrico."
+    },
+    {
+      "symbol": "η",
+      "meaning": "Coeficiente de amortecimento associado à histerese."
+    },
+    {
+      "symbol": "m",
+      "meaning": "Parâmetro de restauração ou massa efetiva na equação de Θ."
+    },
+    {
+      "symbol": "α(Re)",
+      "meaning": "Função dependente do número de Reynolds que acopla a vorticidade à dinâmica de Θ."
+    },
+    {
+      "symbol": "Re",
+      "meaning": "Número de Reynolds."
+    },
+    {
+      "symbol": "||∇u||_{L2}",
+      "meaning": "Norma L2 do gradiente do campo de velocidade."
+    },
+    {
+      "symbol": "||∆u||_{L2}",
+      "meaning": "Norma L2 do Laplaciano do campo de velocidade."
+    },
+    {
+      "symbol": "T^{geom}_{μν}",
+      "meaning": "Tensor geométrico residual de energia-momento."
+    },
+    {
+      "symbol": "K(t-τ)",
+      "meaning": "Núcleo de memória temporal, K(t-τ) = exp(-(t-τ)/τ_rel)."
+    },
+    {
+      "symbol": "g_{μν}",
+      "meaning": "Tensor métrico."
+    },
+    {
+      "symbol": "Φ_eff",
+      "meaning": "Potencial gravitacional efetivo."
+    },
+    {
+      "symbol": "Φ_Newton",
+      "meaning": "Potencial gravitacional newtoniano."
+    },
+    {
+      "symbol": "Φ_NTG",
+      "meaning": "Contribuição geométrica NTG ao potencial gravitacional."
+    },
+    {
+      "symbol": "L",
+      "meaning": "Luminosidade galáctica."
+    },
+    {
+      "symbol": "v_max",
+      "meaning": "Velocidade orbital máxima ou assintótica em curvas de rotação."
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "A relação proposta ν_eff = ν_0(1 + λ Θ/Θ_P) pode ser derivada de uma ação geométrica ou de princípios variacionais, em vez de ser assumida fenomenologicamente?"
+    },
+    {
+      "question": "Qual é a definição matemática precisa de Θ^{μν}(x,t) e como ela interage com derivadas, produtos e operadores diferenciais nas equações de Navier-Stokes?"
+    },
+    {
+      "question": "A equação dinâmica para Θ é compatível com conservação de energia total do sistema fluido-geometria?"
+    },
+    {
+      "question": "Sob quais condições rigorosas a vorticidade força Θ de modo a garantir dissipação O(E(t)^k) com k > 3?"
+    },
+    {
+      "question": "O argumento de regularidade fecha estimativas funcionais completas em 3D ou depende de suposições adicionais sobre suavidade, positividade e crescimento de Θ?"
+    },
+    {
+      "question": "Como evitar que uma viscosidade efetiva dependente de Θ introduza novos termos não controlados quando Θ varia no espaço e no tempo?"
+    },
+    {
+      "question": "Quais são as condições iniciais e de contorno para Θ e como elas afetam a existência global de soluções?"
+    },
+    {
+      "question": "O modelo preserva incompressibilidade, invariâncias de Galileu ou Lorentz, e consistência dimensional?"
+    },
+    {
+      "question": "Quais valores físicos plausíveis de λ, η, τ_rel, m e α(Re) seriam necessários para impedir blow-up em fluidos reais?"
+    },
+    {
+      "question": "A hipótese de que matéria escura é tensão geométrica residual produz previsões quantitativas para curvas de rotação, lentes gravitacionais e formação de estruturas?"
+    },
+    {
+      "question": "O tensor T^{geom}_{μν} satisfaz condições de conservação covariante e é compatível com as equações de Einstein?"
+    },
+    {
+      "question": "A proposta consegue reproduzir observações cosmológicas como CMB, nucleossíntese primordial, Bullet Cluster e espectro de potência da matéria?"
+    },
+    {
+      "question": "Qual experimento interferométrico poderia detectar o chamado eco acústico ou a histerese geométrica prevista?"
+    },
+    {
+      "question": "Como distinguir observacionalmente Φ_NTG de halos de matéria escura fria ou de teorias MOND/gravidade modificada?"
+    }
+  ],
+  "source_file": "Space_Time_as_a_Controller__Resolving_3D_Navier_Stokes_Regularity_and_Dark_Matter_via_Viscoelastic_NTG.pdf",
+  "sha256": "bf6e40a130ff4c2fc71f2351bdc4a048092a03076a557bfa642e76592c1203ec",
+  "imported_at": "2026-06-29T15:55:37.792099+00:00"
+}

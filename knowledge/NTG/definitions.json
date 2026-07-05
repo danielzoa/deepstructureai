@@ -1,0 +1,20 @@
+{
+  "NTG": {
+    "name": "NTG",
+    "description": "Framework geométrico/tensorial usado por Felipe para estudar mecanismos críticos em Navier-Stokes.",
+    "main_goal": "Reformular ou controlar termos críticos ligados ao stretching de vorticidade, pressão anisotrópica e possíveis mecanismos de regularidade.",
+    "current_application": "Navier-Stokes incompressível 3D."
+  },
+  "pressure_anisotropy": {
+    "description": "Ideia de que uma componente anisotrópica da pressão pode atuar como mecanismo de controle ou redistribuição do stretching de vorticidade.",
+    "role": "Candidato a mecanismo regulador no cenário NTG."
+  },
+  "vorticity_stretching": {
+    "description": "Termo crítico em Navier-Stokes 3D associado a (omega · nabla)u ou omega · S omega.",
+    "role": "Principal obstáculo para regularidade global suave."
+  },
+  "worst_case_testing": {
+    "description": "Estratégia metodológica de testar uma hipótese contra o pior cenário possível antes de aceitá-la como promissora.",
+    "role": "Filtro de robustez para hipóteses NTG."
+  }
+}

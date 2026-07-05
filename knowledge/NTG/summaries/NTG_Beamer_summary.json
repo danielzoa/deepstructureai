@@ -1,0 +1,127 @@
+{
+  "title": "NTG: Teoria dos Números Tensoriais Generalizados",
+  "summary": "A Teoria dos Números Tensoriais Generalizados (NTG) é apresentada como uma proposta conceitual em desenvolvimento que amplia a noção clássica de número para incluir entidades algébricas com conteúdo tensorial interno. A ideia central é unificar escalares, vetores, tensores e objetos de ordem superior em um mesmo formalismo estratificado, no qual um único objeto pode conter múltiplas camadas estruturais. A NTG propõe que quantidades matemáticas não sejam tratadas apenas como valores isolados, mas como objetos com estrutura interna, incluindo intensidade, direção, acoplamento, geometria, anisotropia e correlações. O formalismo preliminar considera uma decomposição em componentes de diferentes ordens, com operações como soma, produto generalizado, projeções, contrações, acoplamentos internos e métricas ou seminormas estruturais. A teoria ainda não está completamente formalizada e seus principais desafios incluem definir rigorosamente suas operações, construir exemplos não triviais, conectar-se a teorias estabelecidas e produzir resultados matemáticos verificáveis.",
+  "definitions": [
+    {
+      "term": "NTG",
+      "definition": "Teoria que amplia a noção clássica de número, permitindo considerar entidades algébricas dotadas de conteúdo tensorial interno, organizadas para unificar diferentes classes de objetos matemáticos sob um mesmo formalismo."
+    },
+    {
+      "term": "Número com estrutura tensorial generalizada",
+      "definition": "Objeto matemático que combina componentes escalares, vetoriais, tensoriais e possivelmente de ordens superiores em uma entidade unificada."
+    },
+    {
+      "term": "Elemento NTG",
+      "definition": "Entidade estratificada composta por camadas estruturais de diferentes ordens, podendo ser escrita preliminarmente como X = X^(0) + X^(1) + X^(2) + ... + X^(m), com X^(k) pertencente a T^(k)."
+    },
+    {
+      "term": "Camada estrutural",
+      "definition": "Componente de uma entidade NTG correspondente a um nível específico de estrutura. A camada de ordem 0 representa a parte escalar, a de ordem 1 a parte vetorial, a de ordem 2 a parte tensorial de segunda ordem, e camadas superiores representam estruturas mais refinadas."
+    },
+    {
+      "term": "Produto generalizado",
+      "definition": "Operação indicada por ⋆, proposta para codificar interações estruturais entre camadas ou entidades NTG, generalizando diferentes tipos de produto da matemática clássica, como produto usual, produto interno, produto tensorial e composição de operadores."
+    },
+    {
+      "term": "Projeção estrutural",
+      "definition": "Aplicação π_k : T → T^(k) que extrai a componente de ordem k de um objeto NTG, permitindo isolar camadas específicas e recuperar objetos clássicos como escalares, vetores e tensores."
+    },
+    {
+      "term": "Princípio de inclusão",
+      "definition": "Exigência de que a NTG contenha a matemática clássica como caso particular coerente, de modo que números reais, números complexos, espaços vetoriais e tensores clássicos apareçam como subcasos ou projeções naturais."
+    }
+  ],
+  "hypotheses": [
+    "Escalares, vetores, matrizes e tensores clássicos podem não ser suficientes para capturar toda a estrutura relevante de certos fenômenos complexos.",
+    "Parte da dificuldade em alguns problemas matemáticos ou físicos pode estar na forma como os objetos são codificados, não apenas na resolução das equações.",
+    "A distinção tradicional entre número e tensor pode ser rígida demais para certos contextos.",
+    "Pode existir uma linguagem intermediária mais rica na qual o próprio número carregue estrutura geométrica e algébrica interna.",
+    "Quantidades relevantes podem conter simultaneamente intensidade, direção, acoplamento, geometria, anisotropia e hierarquias internas.",
+    "Uma representação estratificada de objetos matemáticos pode revelar padrões ocultos em problemas com múltiplas estruturas interagentes.",
+    "Problemas difíceis podem ser difíceis não apenas de resolver, mas de representar adequadamente.",
+    "Uma teoria robusta deve recuperar a matemática clássica como caso limite, caso simples ou projeção natural.",
+    "Um produto generalizado adequado deve codificar interações estruturais reais, e não apenas introduzir simbolismo formal."
+  ],
+  "notation": [
+    {
+      "symbol": "T",
+      "meaning": "Classe ou espaço de entidades NTG."
+    },
+    {
+      "symbol": "T = ⊕_{k≥0} T^(k)",
+      "meaning": "Decomposição preliminar do espaço NTG como soma direta de componentes ou camadas estruturais de diferentes ordens."
+    },
+    {
+      "symbol": "T^(k)",
+      "meaning": "Componente de ordem k da estrutura NTG."
+    },
+    {
+      "symbol": "k = 0",
+      "meaning": "Camada escalar."
+    },
+    {
+      "symbol": "k = 1",
+      "meaning": "Camada vetorial."
+    },
+    {
+      "symbol": "k = 2",
+      "meaning": "Camada tensorial de ordem 2."
+    },
+    {
+      "symbol": "k = 3, 4, ...",
+      "meaning": "Camadas de ordem superior, associadas a estruturas mais refinadas, correlações ou hierarquias internas."
+    },
+    {
+      "symbol": "X = X^(0) + X^(1) + X^(2) + ... + X^(m)",
+      "meaning": "Forma geral preliminar de um elemento NTG com número finito de camadas."
+    },
+    {
+      "symbol": "X^(k) ∈ T^(k)",
+      "meaning": "A componente de ordem k do elemento X pertence à camada estrutural T^(k)."
+    },
+    {
+      "symbol": "π_k : T → T^(k)",
+      "meaning": "Projeção estrutural que extrai a componente de ordem k."
+    },
+    {
+      "symbol": "π_k(X) = X^(k)",
+      "meaning": "Definição da projeção da entidade X sobre sua camada de ordem k."
+    },
+    {
+      "symbol": "π_0(X) = X^(0)",
+      "meaning": "Projeção que recupera a componente escalar clássica de X."
+    },
+    {
+      "symbol": "X + Y",
+      "meaning": "Soma entre entidades NTG."
+    },
+    {
+      "symbol": "X ⋆ Y",
+      "meaning": "Produto generalizado entre entidades NTG."
+    },
+    {
+      "symbol": "X = a + v + T",
+      "meaning": "Exemplo conceitual simples de objeto NTG formado por uma parte escalar a, uma parte vetorial v e uma parte tensorial T."
+    }
+  ],
+  "open_questions": [
+    "Como definir rigorosamente o espaço ou classe T das entidades NTG?",
+    "Como caracterizar precisamente cada componente T^(k)?",
+    "A decomposição T = ⊕_{k≥0} T^(k) deve ser entendida como soma direta algébrica, topológica, graduada ou outra estrutura?",
+    "Quais axiomas devem reger a soma, o produto generalizado, as projeções, as contrações e os acoplamentos internos?",
+    "O produto generalizado ⋆ é associativo, comutativo, distributivo ou possui unidade?",
+    "Como o produto ⋆ se relaciona com o produto usual, o produto interno, o produto tensorial e a composição de operadores?",
+    "Quais condições garantem que as operações preservem o significado matemático das camadas estruturais?",
+    "Como definir métricas, seminormas ou topologias adequadas para objetos NTG?",
+    "Como recuperar formalmente números reais, números complexos, espaços vetoriais e tensores clássicos como subcasos ou projeções da NTG?",
+    "Quais exemplos concretos e não triviais demonstram vantagem da NTG sobre formalismos tradicionais?",
+    "Quais problemas específicos em equações diferenciais não lineares, análise funcional, geometria diferencial, física matemática ou sistemas complexos podem ser tratados com a NTG?",
+    "A NTG produz resultados matemáticos verificáveis que não sejam apenas reformulações de estruturas já conhecidas?",
+    "Como distinguir a NTG de estruturas matemáticas existentes, como álgebras graduadas, álgebras tensoriais, fibrados, multivetores ou álgebras geométricas?",
+    "Quais aplicações justificam a introdução de uma nova noção ampliada de número?",
+    "Como construir uma base axiomática suficientemente sólida antes de aplicar a teoria a problemas maiores?"
+  ],
+  "source_file": "NTG_Beamer.pdf",
+  "sha256": "7843f7c886083f21e53d3b39318b90d2acf99695cbbd15e24602fc215435569b",
+  "imported_at": "2026-06-29T16:20:13.025277+00:00"
+}

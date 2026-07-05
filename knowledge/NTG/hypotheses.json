@@ -1,0 +1,38 @@
+{
+  "hypotheses": [
+    {
+      "id": "H1",
+      "title": "Pressão anisotrópica como mecanismo regulador",
+      "status": "active",
+      "description": "Investigar se uma componente anisotrópica da pressão pode limitar o stretching de vorticidade e impedir blow-up.",
+      "keywords": [
+        "pressão anisotrópica",
+        "regularidade",
+        "stretching",
+        "Navier-Stokes"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Controle do pior cenário",
+      "status": "active",
+      "description": "Toda hipótese deve ser testada primeiro contra o cenário mais desfavorável conhecido.",
+      "keywords": [
+        "worst case",
+        "blow-up",
+        "robustez"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "NTG como reformulação estrutural",
+      "status": "research",
+      "description": "A NTG procura reorganizar a dinâmica dos termos críticos sem alterar a física das equações.",
+      "keywords": [
+        "NTG",
+        "estrutura",
+        "tensores"
+      ]
+    }
+  ]
+}

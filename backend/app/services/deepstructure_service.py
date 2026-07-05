@@ -1,0 +1,259 @@
+import json
+import os
+import sqlite3
+from datetime import datetime
+from pathlib import Path
+from typing import Any
+
+import httpx
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
+
+def _read_json(path: Path, fallback: Any):
+    try:
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return fallback
+    return fallback
+
+
+def _file_size_mb(path: Path) -> float:
+    if not path.exists():
+        return 0.0
+    if path.is_file():
+        return round(path.stat().st_size / (1024 * 1024), 1)
+    total = sum(p.stat().st_size for p in path.rglob("*") if p.is_file())
+    return round(total / (1024 * 1024), 1)
+
+
+class DeepStructureService:
+    dangerous_tokens = {
+        "rm ",
+        "del ",
+        "remove-item",
+        "format",
+        "shutdown",
+        "reset --hard",
+        "drop table",
+    }
+
+    def project_root(self):
+        return PROJECT_ROOT
+
+    def about(self):
+        return {
+            "name": "DeepStructureAI",
+            "description": "NTG Research Assistant com backend FastAPI e frontend web MVP.",
+            "version": "0.1.0-mvp",
+        }
+
+    def health(self):
+        return {
+            "status": "ok",
+            "project": "DeepStructureAI",
+            "glmConfigured": bool(os.getenv("ZAI_API_KEY")),
+            "ollamaAvailable": self._ollama_available(),
+        }
+
+    def _ollama_available(self):
+        url = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
+        base_url = url.split("/api/")[0]
+        try:
+            response = httpx.get(f"{base_url}/api/tags", timeout=0.8)
+            return response.status_code == 200
+        except Exception:
+            return False
+
+    def models(self):
+        env_map = {
+            "glm": bool(os.getenv("ZAI_API_KEY")),
+            "openai": bool(os.getenv("OPENAI_API_KEY")),
+            "claude": bool(os.getenv("ANTHROPIC_API_KEY")),
+            "ollama": self._ollama_available(),
+            "deepseek": self._ollama_available(),
+            "qwen": self._ollama_available(),
+            "hermes": self._ollama_available(),
+        }
+        labels = {
+            "glm": "GLM / Z.AI",
+            "ollama": "Ollama Local",
+            "openai": "OpenAI",
+            "claude": "Claude",
+            "deepseek": "DeepSeek",
+            "qwen": "Qwen",
+            "hermes": "Hermes",
+        }
+        return [
+            {"id": key, "name": labels[key], "available": env_map[key]}
+            for key in labels
+        ]
+
+    def agents(self):
+        return [
+            {"name": "Planner", "role": "Planejamento", "status": "online"},
+            {"name": "Researcher", "role": "Pesquisa", "status": "online"},
+            {"name": "Critic", "role": "Critica", "status": "standby"},
+            {"name": "Writer", "role": "Escrita", "status": "online"},
+            {"name": "Reviewer", "role": "Revisao", "status": "standby"},
+        ]
+
+    def summary(self):
+        graph = self.graph()
+        documents = self.documents()
+        return {
+            "nodes": len(graph["nodes"]),
+            "relations": len(graph["edges"]),
+            "clusters": max(3, min(17, len(graph["nodes"]) // 2)),
+            "concepts": max(8, len(graph["nodes"]) + len(documents)),
+            "semanticMemorySize": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db"),
+            "scientificMemorySize": _file_size_mb(PROJECT_ROOT / "data" / "scientific_memory.json"),
+            "laboratorySize": _file_size_mb(PROJECT_ROOT / "data" / "laboratory.db"),
+            "documentsCount": len(documents),
+        }
+
+    def graph(self):
+        for path in (
+            PROJECT_ROOT / "data" / "knowledge_graph.json",
+            PROJECT_ROOT / "output" / "graph" / "knowledge_graph.json",
+        ):
+            data = _read_json(path, None)
+            normalized = self._normalize_graph(data)
+            if normalized:
+                return normalized
+        return self._mock_graph()
+
+    def _normalize_graph(self, data):
+        if not isinstance(data, dict):
+            return None
+        raw_nodes = data.get("nodes") or []
+        raw_edges = data.get("edges") or data.get("links") or []
+        nodes = []
+        for idx, node in enumerate(raw_nodes):
+            if isinstance(node, dict):
+                node_id = str(node.get("id") or node.get("name") or node.get("label") or idx)
+                nodes.append({"id": node_id, "label": str(node.get("label") or node.get("name") or node_id)})
+            else:
+                nodes.append({"id": str(node), "label": str(node)})
+        edges = []
+        for edge in raw_edges:
+            if isinstance(edge, dict):
+                source = edge.get("source") or edge.get("from")
+                target = edge.get("target") or edge.get("to")
+                if source and target:
+                    edges.append({"source": str(source), "target": str(target), "label": str(edge.get("label", ""))})
+        if nodes:
+            return {"nodes": nodes[:80], "edges": edges[:160]}
+        return None
+
+    def _mock_graph(self):
+        labels = [
+            "NTG",
+            "Navier-Stokes 3D",
+            "Vorticidade",
+            "Pressao Anisotropica",
+            "Nao Comutatividade",
+            "Materia Escura",
+            "Rigidez Espectral",
+            "Energia",
+            "Transporte",
+        ]
+        nodes = [{"id": label.lower().replace(" ", "-"), "label": label} for label in labels]
+        edges = [{"source": "ntg", "target": node["id"], "label": "relaciona"} for node in nodes[1:]]
+        return {"nodes": nodes, "edges": edges}
+
+    def graph_stats(self):
+        graph = self.graph()
+        return {
+            "nodes": len(graph["nodes"]),
+            "edges": len(graph["edges"]),
+            "density": round(len(graph["edges"]) / max(1, len(graph["nodes"])), 2),
+        }
+
+    def memory(self):
+        return [
+            {"name": "Memoria Semantica", "size": _file_size_mb(PROJECT_ROOT / "data" / "semantic_memory.db")},
+            {"name": "Memoria Cientifica", "size": _file_size_mb(PROJECT_ROOT / "data" / "scientific_memory.json")},
+            {"name": "Knowledge Graph", "size": _file_size_mb(PROJECT_ROOT / "data" / "knowledge_graph.db")},
+            {"name": "Laboratorio", "size": _file_size_mb(PROJECT_ROOT / "data" / "laboratory.db")},
+        ]
+
+    def lab_status(self):
+        lab_db = PROJECT_ROOT / "data" / "laboratory.db"
+        evidence_count = 3
+        tests_count = 2
+        try:
+            if lab_db.exists():
+                with sqlite3.connect(lab_db) as conn:
+                    tables = conn.execute("select name from sqlite_master where type='table'").fetchall()
+                    tests_count = max(tests_count, len(tables))
+        except Exception:
+            pass
+        return {
+            "project": "Controle de Enstrofia em NS 3D",
+            "hypothesis": "Ativa",
+            "evidenceCount": evidence_count,
+            "testsCount": tests_count,
+            "progress": 68,
+        }
+
+    def documents(self):
+        roots = [
+            PROJECT_ROOT / "knowledge" / "NTG",
+            PROJECT_ROOT / "knowledge" / "NTG" / "imports",
+            PROJECT_ROOT / "output" / "pdf" / "articles",
+            PROJECT_ROOT / "data",
+        ]
+        docs = []
+        for root in roots:
+            if not root.exists():
+                continue
+            for path in root.rglob("*"):
+                if path.is_file() and path.suffix.lower() in {".pdf", ".tex", ".md", ".json", ".db"}:
+                    docs.append(
+                        {
+                            "name": path.name,
+                            "path": str(path.relative_to(PROJECT_ROOT)),
+                            "size": path.stat().st_size,
+                            "modified": datetime.fromtimestamp(path.stat().st_mtime).isoformat(),
+                        }
+                    )
+        return sorted(docs, key=lambda item: item["modified"], reverse=True)[:40]
+
+    def activity(self):
+        log_path = PROJECT_ROOT / "logs" / "agent.log"
+        if log_path.exists():
+            try:
+                lines = [line.strip() for line in log_path.read_text(encoding="utf-8", errors="ignore").splitlines() if line.strip()]
+                return [{"time": "", "event": line[:120]} for line in lines[-8:]][::-1]
+            except Exception:
+                pass
+        return [
+            {"time": "10:45", "event": "Grafo atualizado"},
+            {"time": "10:44", "event": "Evidencia adicionada"},
+            {"time": "10:43", "event": "Pesquisa concluida"},
+            {"time": "10:42", "event": "PDF importado"},
+        ]
+
+    def run_command(self, command: str):
+        normalized = command.strip().lower()
+        if any(token in normalized for token in self.dangerous_tokens):
+            return {"output": "Comando bloqueado por seguranca.", "blocked": True, "warnings": ["dangerous_command"]}
+        if normalized in {"/about", "about"}:
+            return {"output": json.dumps(self.about(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/health", "health"}:
+            return {"output": json.dumps(self.health(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/models", "models"}:
+            return {"output": json.dumps(self.models(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        if normalized in {"/graph stats", "graph stats"}:
+            return {"output": json.dumps(self.graph_stats(), ensure_ascii=False, indent=2), "blocked": False, "warnings": []}
+        return {
+            "output": "Comando reconhecido no MVP. A execucao profunda sera conectada ao CLI em uma proxima etapa.",
+            "blocked": False,
+            "warnings": ["demo_command"],
+        }
+
+
+service = DeepStructureService()

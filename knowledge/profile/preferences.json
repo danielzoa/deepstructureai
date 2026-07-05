@@ -1,0 +1,13 @@
+{
+  "language": "português",
+  "communication_style": [
+    "direto",
+    "rigoroso",
+    "criativo"
+  ],
+  "reasoning_preferences": [
+    "distinguir fatos de hipóteses",
+    "admitir incerteza",
+    "propor próximos passos verificáveis"
+  ]
+}

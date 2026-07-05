@@ -1,0 +1,9 @@
+{
+  "use_in_prompts": true,
+  "store_sensitive_data": false,
+  "notes": [
+    "Não guardar senhas, documentos, dados bancários ou segredos.",
+    "Somente arquivos explicitamente permitidos são carregados.",
+    "Felipe pode revisar ou apagar este perfil a qualquer momento."
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "title": "Spectral Rigidity and Global Admissibility: A Unified Resolution of the Riemann Hypothesis and 3D Navier-Stokes Regularity",
+  "summary": {
+    "topic": "O documento propõe uma estrutura unificada, chamada teoria Gaspar-NTG, para relacionar a Hipótese de Riemann e a regularidade global das equações de Navier-Stokes 3D por meio de um princípio de rigidez espectral/geométrica.",
+    "main_claims": [
+      "Para a função zeta de Riemann, afirma-se que zeros não triviais fora da reta crítica Re(s)=1/2 produziriam um desequilíbrio analítico incompatível com a paridade da função Xi de Riemann.",
+      "O documento introduz um argumento chamado Taylor Imbalance Lemma, segundo o qual um quarteto hipotético de zeros deslocados da reta crítica não poderia ser compensado pelo produto de Hadamard dos demais zeros.",
+      "Afirma-se que os zeros sobre a reta crítica exercem uma pressão restauradora logarítmica que impediria deslocamentos δ>0 de zeros para fora da reta crítica.",
+      "Para Navier-Stokes 3D, o documento propõe que o escoamento permanece confinado a uma variedade de admissibilidade NTG, na qual a taxa intermediária de deformação é suprimida.",
+      "Sob essa condição geométrica, afirma-se que o termo de alongamento de vorticidade seria controlado pela dissipação viscosa, impedindo blow-up em tempo finito."
+    ],
+    "status_scientific_note": "As alegações centrais são apresentadas como provas no documento, mas dependem de hipóteses fortes ou não demonstradas, como a permanência do escoamento na variedade NTG e a capacidade de concluir a Hipótese de Riemann a partir de argumentos formais de rigidez."
+  },
+  "definitions": [
+    {
+      "name": "Função Xi de Riemann",
+      "symbol": "Ξ(z)",
+      "description": "Função inteira de ordem 1 associada à função zeta de Riemann, escrita em coordenada centralizada z=s-1/2. No documento é tratada como função par, satisfazendo Ξ(z)=Ξ(-z).",
+      "formula": "Ξ(z)=Σ_{n=0}^{∞} a_{2n} z^{2n}, com a_{2n}∈R"
+    },
+    {
+      "name": "Quarteto hipotético de zeros deslocados",
+      "symbol": "Q_δ={±δ±iγ}",
+      "description": "Conjunto de quatro zeros não triviais hipotéticos da função Ξ(z), simétricos em relação aos eixos, com deslocamento real δ>0 em relação à reta crítica.",
+      "formula": "Q_δ(z)=[(z-iγ)^2-δ^2][(z+iγ)^2-δ^2]=(z^2+γ^2)^2-2δ^2(z^2-γ^2)+δ^4"
+    },
+    {
+      "name": "Operador de fundo de Hadamard",
+      "symbol": "H_δ(z)",
+      "description": "Fator remanescente obtido ao remover o quarteto hipotético Q_δ(z) da fatoração de Ξ(z).",
+      "formula": "Ξ(z)=Q_δ(z)H_δ(z)"
+    },
+    {
+      "name": "Taylor Imbalance Lemma",
+      "description": "Lema proposto segundo o qual o fator de fundo H_δ(z) não conseguiria compensar a singularidade induzida pela variação do quarteto hipotético Q_δ quando δ→0+, preservando simultaneamente a paridade global de Ξ."
+    },
+    {
+      "name": "Pressão restauradora espectral",
+      "symbol": "F_res",
+      "description": "Campo ou força analítica atribuída aos zeros sobre a reta crítica, modelada como soma/integral de núcleos de Poisson, que supostamente atrairia zeros dissidentes de volta à reta crítica.",
+      "formula": "F_res≈∫ δ/[δ^2+(γ-t)^2] · [1/(2π) ln(t/(2π))] dt"
+    },
+    {
+      "name": "NTG-Admissibilidade",
+      "symbol": "u∈G_NTG",
+      "description": "Propriedade imposta a um campo de velocidade incompressível u(x,t)∈H^1(R^3), segundo a qual o tensor de deformação possui taxa intermediária de deformação pequena em comparação com as extremas.",
+      "formula": "C_NTG[S]=|λ_2(S)|/max(|λ_1|,|λ_3|)≤ϵ(t)"
+    },
+    {
+      "name": "Tensor de deformação",
+      "symbol": "S_{ij}",
+      "description": "Parte simétrica do gradiente de velocidade.",
+      "formula": "S_{ij}=1/2(∂_j u_i+∂_i u_j)"
+    },
+    {
+      "name": "Enstrofia",
+      "symbol": "E(t)",
+      "description": "Medida quadrática da vorticidade do escoamento.",
+      "formula": "E(t)=1/2∫_{R^3}|ω|^2 dx"
+    },
+    {
+      "name": "Termo de alongamento de vorticidade",
+      "symbol": "ω·Sω",
+      "description": "Termo não linear responsável pela possível amplificação de vorticidade nas equações de Navier-Stokes 3D.",
+      "formula": "ω·Sω=λ_1ω_1^2+λ_2ω_2^2+λ_3ω_3^2"
+    }
+  ],
+  "hypotheses": [
+    {
+      "context": "Hipótese de Riemann",
+      "assumptions": [
+        "A função Ξ(z) é inteira de ordem 1 e par: Ξ(z)=Ξ(-z).",
+        "Zeros fora da reta crítica aparecem em quartetos simétricos Q_δ={±δ±iγ}.",
+        "A fatoração Ξ(z)=Q_δ(z)H_δ(z) é considerada com H_δ representando os demais zeros.",
+        "O documento assume que o fundo H_δ é formado por zeros na reta crítica ou que sua densidade obedece a uma rigidez do tipo Montgomery-Odlyzko.",
+        "A densidade dos zeros é aproximada pela fórmula de Riemann-von Mangoldt: dN(t)≈(1/(2π))ln(t/(2π))dt.",
+        "A pressão restauradora acumulada dos zeros da reta crítica é tratada como suficiente para impedir deslocamentos δ>0."
+      ]
+    },
+    {
+      "context": "Navier-Stokes 3D",
+      "assumptions": [
+        "O campo de velocidade u(x,t) é incompressível e pertence a H^1(R^3).",
+        "A vorticidade é ω=∇×u.",
+        "O tensor de deformação S tem autovalores λ_1≤λ_2≤λ_3 e, pela incompressibilidade, λ_1+λ_2+λ_3=0.",
+        "O escoamento permanece na variedade NTG, isto é, satisfaz C_NTG[S]≤ϵ(t).",
+        "A pressão atua como multiplicador de Lagrange não local que restauraria o escoamento à variedade G_NTG.",
+        "A supressão de λ_2 ou o alinhamento penalizado da vorticidade com a direção intermediária seriam suficientes para controlar o termo ∫ω·Sω dx."
+      ]
+    }
+  ],
+  "notation": {
+    "s": "Variável complexa usual da função zeta de Riemann.",
+    "z": "Coordenada centralizada em torno da reta crítica, z=s-1/2.",
+    "ζ(s)": "Função zeta de Riemann.",
+    "Ξ(z)": "Função Xi de Riemann em variável centralizada.",
+    "ρ": "Zero não trivial da função zeta ou da função Xi.",
+    "δ": "Deslocamento real hipotético de um zero em relação à reta crítica.",
+    "γ": "Parte imaginária ou altura espectral de um zero.",
+    "Q_δ": "Fator polinomial associado a um quarteto de zeros deslocados.",
+    "H_δ": "Fator de fundo contendo os zeros restantes no produto de Hadamard.",
+    "F(s)": "Parte real da derivada logarítmica Ξ'(s)/Ξ(s), interpretada como força analítica.",
+    "F_res": "Pressão ou força restauradora dos zeros de fundo.",
+    "T": "Altura espectral de truncamento em somas ou integrais sobre zeros.",
+    "N(t)": "Função contadora de zeros da zeta até altura t.",
+    "u(x,t)": "Campo de velocidade do fluido.",
+    "p": "Pressão nas equações de Navier-Stokes.",
+    "ν": "Viscosidade cinemática.",
+    "ω": "Vorticidade, ω=∇×u.",
+    "S": "Tensor simétrico de deformação do gradiente de velocidade.",
+    "λ_1, λ_2, λ_3": "Autovalores do tensor de deformação S, ordenados como λ_1≤λ_2≤λ_3.",
+    "e_1, e_2, e_3": "Autovetores ortonormais associados aos autovalores de S.",
+    "E(t)": "Enstrofia do escoamento.",
+    "G_NTG": "Variedade de admissibilidade NTG.",
+    "C_NTG[S]": "Razão de anisotropia usada para definir NTG-admissibilidade.",
+    "ϵ(t)": "Função positiva que limita a razão de anisotropia NTG."
+  },
+  "open_questions": [
+    {
+      "question": "A definição do Gaspar Rigidity Operator G_NTG é mencionada, mas não é matematicamente especificada no trecho fornecido.",
+      "context": "Sem uma definição formal do operador, não é possível verificar rigorosamente suas propriedades espectrais ou geométricas."
+    },
+    {
+      "question": "A passagem do argumento local com o quarteto Q_δ para uma prova global da Hipótese de Riemann permanece não justificada.",
+      "context": "A paridade de Ξ(z) permite quartetos simétricos fora da reta crítica; portanto, é necessário demonstrar por que a existência de Q_δ violaria de fato a estrutura inteira global."
+    },
+    {
+      "question": "A afirmação de que H_δ não pode produzir termos compensatórios singulares requer prova mais precisa.",
+      "context": "Como H_δ depende da remoção de zeros da fatoração, sua variação formal em δ não está claramente definida como operação independente sobre uma função fixa Ξ."
+    },
+    {
+      "question": "A hipótese de que os demais zeros estão na reta crítica é circular se usada para provar a Hipótese de Riemann.",
+      "context": "O argumento parece assumir uma estrutura de fundo compatível com a conclusão desejada."
+    },
+    {
+      "question": "A derivação da pressão restauradora F_res usa aproximações contínuas da densidade de zeros; falta justificar que tais aproximações controlam zeros individuais.",
+      "context": "Resultados assintóticos médios como Riemann-von Mangoldt não implicam diretamente rigidez local suficiente para excluir zeros fora da reta crítica."
+    },
+    {
+      "question": "A condição de permanência do escoamento na variedade NTG não é demonstrada a partir das equações de Navier-Stokes.",
+      "context": "Para provar regularidade global, seria necessário mostrar que soluções suaves iniciais entram ou permanecem em G_NTG sem assumir previamente o controle geométrico."
+    },
+    {
+      "question": "A supressão de λ_2 não garante automaticamente controle global do termo ω·Sω.",
+      "context": "É preciso estabelecer estimativas quantitativas que dominem o alongamento de vorticidade pela dissipação viscosa em normas adequadas."
+    },
+    {
+      "question": "O papel da pressão como mecanismo restaurador da variedade G_NTG é descrito heuristicamente.",
+      "context": "Falta uma identidade, desigualdade ou princípio variacional rigoroso que conecte a equação de Poisson da pressão à invariância da variedade NTG."
+    },
+    {
+      "question": "O trecho termina antes da conclusão da prova do Teorema 3.3.",
+      "context": "A demonstração de boundedness global da enstrofia está incompleta no documento fornecido."
+    }
+  ],
+  "source_file": "Spectral_Rigidity_and_Global_Admissibility__A_Unified_Resolution_of_the_Riemann_Hypothesis_and_3D_Navier_Stokes_Regularity.pdf",
+  "sha256": "89c5010b84d8a8b3bf11269947dcea39b849a39695b94699c93d2af46e6603a6",
+  "imported_at": "2026-06-30T00:12:53.469432+00:00"
+}

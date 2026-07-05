@@ -1,0 +1,52 @@
+{
+  "nodes": {
+    "H1": {
+      "id": "H1",
+      "label": "H1",
+      "type": "hypothesis",
+      "description": "Pressão anisotrópica como mecanismo regulador.",
+      "created_at": "2026-07-04 01:01:09"
+    },
+    "P0": {
+      "id": "P0",
+      "label": "P0",
+      "type": "concept",
+      "description": "Componente anisotrópica da pressão.",
+      "created_at": "2026-07-04 01:01:22"
+    },
+    "Stretching": {
+      "id": "Stretching",
+      "label": "Stretching",
+      "type": "concept",
+      "description": "Alongamento da vorticidade.",
+      "created_at": "2026-07-04 01:01:40"
+    },
+    "BKM": {
+      "id": "BKM",
+      "label": "BKM",
+      "type": "criterion",
+      "description": "Critério de Beale-Kato-Majda.",
+      "created_at": "2026-07-04 01:01:52"
+    }
+  },
+  "edges": [
+    {
+      "source": "H1",
+      "relation": "usa",
+      "target": "P0",
+      "created_at": "2026-07-04 01:02:03"
+    },
+    {
+      "source": "P0",
+      "relation": "tenta controlar",
+      "target": "Stretching",
+      "created_at": "2026-07-04 01:02:15"
+    },
+    {
+      "source": "H1",
+      "relation": "deve satisfazer",
+      "target": "BKM",
+      "created_at": "2026-07-04 01:02:25"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "title": "NS_and_Dark_Matter",
+  "summary": "O documento propõe um sistema acoplado entre as equações de Navier-Stokes incompressíveis em 3D e uma variável global de não-comutatividade do espaço-tempo Θ(t). A viscosidade efetiva do fluido aumenta com Θ(t), enquanto Θ(t) é forçada pela enstrofia do fluido E(t). Introduz-se Φ(t) = Θ(t) - ΘP para garantir Θ(t) ≥ ΘP sob uma condição de superamortecimento. A análise deriva uma desigualdade de enstrofia com viscosidade dinâmica e usa uma desigualdade de Young dependente do tempo para obter uma estimativa regularizada envolvendo a razão R(t) = E(t)/Φ(t). O texto afirma que o acoplamento dinâmico impediria perfis de blow-up compatíveis com singularidades de Navier-Stokes, sugerindo regularidade global, embora a argumentação final contenha lacunas e inconsistências de escala.",
+  "definitions": [
+    {
+      "term": "Fluido incompressível",
+      "definition": "Campo de velocidade u(t,x) satisfazendo ∇·u = 0 em um domínio tridimensional periódico T³ ou domínio limitado com condições de Dirichlet."
+    },
+    {
+      "term": "Enstrofia",
+      "definition": "E(t) = 1/2 ||∇u||²_L², medida global da intensidade do gradiente de velocidade ou vorticidade."
+    },
+    {
+      "term": "Parâmetro de não-comutatividade",
+      "definition": "Θ(t), variável global homogênea no espaço que representa uma escala efetiva de não-comutatividade do espaço-tempo."
+    },
+    {
+      "term": "Escala de Planck",
+      "definition": "ΘP > 0, limite inferior físico assumido para Θ(t)."
+    },
+    {
+      "term": "Deformação geométrica",
+      "definition": "Φ(t) = Θ(t) - ΘP. A condição Φ(t) ≥ 0 equivale a Θ(t) ≥ ΘP."
+    },
+    {
+      "term": "Viscosidade efetiva",
+      "definition": "νeff(Θ) = ν0(1 + λΘ(t)/ΘP). Em termos de Φ, νeff = ν0(1 + λ) + (ν0λ/ΘP)Φ = ν̃0 + γΦ."
+    },
+    {
+      "term": "Razão dinâmica de controle",
+      "definition": "R(t) = E(t)/Φ(t), usada para medir a relação entre crescimento turbulento e resposta geométrica."
+    },
+    {
+      "term": "Sistema acoplado",
+      "definition": "Navier-Stokes incompressível com viscosidade dependente de Θ(t), acoplado à equação τrel Φ¨ + η Φ˙ + m²Φ = 2αE(t)."
+    },
+    {
+      "term": "Condição de overdamping",
+      "definition": "η² ≥ 4τrelm², garantindo raízes reais não positivas para o oscilador linear de Φ."
+    },
+    {
+      "term": "Constante NTG",
+      "definition": "KNTG = 27 C⁴/(256 γ³), constante obtida após aplicar Young ao termo não linear da estimativa de enstrofia."
+    }
+  ],
+  "hypotheses": [
+    "O domínio espacial é tridimensional, periódico T³ ou limitado com condições de contorno de Dirichlet.",
+    "O fluido é incompressível: ∇·u = 0.",
+    "A viscosidade cinemática clássica satisfaz ν0 > 0.",
+    "A constante de acoplamento satisfaz λ > 0.",
+    "A escala de Planck satisfaz ΘP > 0.",
+    "O tempo de relaxação/inércia geométrica satisfaz τrel > 0.",
+    "O amortecimento geométrico satisfaz η > 0.",
+    "A rigidez/restauração geométrica satisfaz m² > 0.",
+    "A eficiência de acoplamento turbulência-geometria satisfaz α > 0.",
+    "A variável Θ(t) é homogênea no espaço e depende apenas do tempo.",
+    "A forçante geométrica é proporcional à enstrofia: τrel Θ¨ + η Θ˙ + m²(Θ - ΘP) = 2αE(t).",
+    "Para garantir Θ(t) ≥ ΘP, assume-se Φ(0) ≥ 0 e Φ˙(0) = 0.",
+    "A proposição de não-negatividade assume η² ≥ 4τrelm².",
+    "A estimativa de enstrofia usa desigualdades de Sobolev/Gagliardo-Nirenberg em 3D.",
+    "Na análise de blow-up, assume-se um perfil assintótico E(t) ~ (T* - t)^(-p), com p > 0.",
+    "A análise invoca o critério de Leray segundo o qual um blow-up teria crescimento mínimo de enstrofia com p ≥ 1/2."
+  ],
+  "notation": [
+    {
+      "symbol": "u(t,x)",
+      "meaning": "Campo de velocidade do fluido."
+    },
+    {
+      "symbol": "P(t,x)",
+      "meaning": "Pressão hidrodinâmica."
+    },
+    {
+      "symbol": "ρ",
+      "meaning": "Densidade do fluido."
+    },
+    {
+      "symbol": "ν0",
+      "meaning": "Viscosidade cinemática clássica."
+    },
+    {
+      "symbol": "νeff(Θ)",
+      "meaning": "Viscosidade efetiva dependente da variável geométrica Θ."
+    },
+    {
+      "symbol": "Θ(t)",
+      "meaning": "Parâmetro global de não-comutatividade do espaço-tempo."
+    },
+    {
+      "symbol": "ΘP",
+      "meaning": "Escala de área de Planck."
+    },
+    {
+      "symbol": "Φ(t)",
+      "meaning": "Deformação acima da escala de Planck, Φ = Θ - ΘP."
+    },
+    {
+      "symbol": "E(t)",
+      "meaning": "Enstrofia, E = 1/2 ||∇u||²_L²."
+    },
+    {
+      "symbol": "τrel",
+      "meaning": "Tempo de relaxação ou parâmetro inercial da variável geométrica."
+    },
+    {
+      "symbol": "η",
+      "meaning": "Coeficiente de amortecimento da dinâmica geométrica."
+    },
+    {
+      "symbol": "m²",
+      "meaning": "Constante de rigidez/restauração da dinâmica geométrica."
+    },
+    {
+      "symbol": "α",
+      "meaning": "Coeficiente de acoplamento da enstrofia à dinâmica geométrica."
+    },
+    {
+      "symbol": "λ",
+      "meaning": "Constante de acoplamento NTG que controla o aumento da viscosidade."
+    },
+    {
+      "symbol": "ν̃0",
+      "meaning": "ν̃0 = ν0(1 + λ), parte basal aumentada da viscosidade efetiva."
+    },
+    {
+      "symbol": "γ",
+      "meaning": "γ = ν0λ/ΘP, coeficiente da contribuição γΦ à viscosidade."
+    },
+    {
+      "symbol": "R(t)",
+      "meaning": "Razão dinâmica E(t)/Φ(t)."
+    },
+    {
+      "symbol": "g(t)",
+      "meaning": "Função de Green do oscilador linear amortecido para Φ."
+    },
+    {
+      "symbol": "KNTG",
+      "meaning": "Constante KNTG = 27 C⁴/(256γ³)."
+    },
+    {
+      "symbol": "T*",
+      "meaning": "Tempo hipotético de singularidade finita."
+    },
+    {
+      "symbol": "p",
+      "meaning": "Expoente de crescimento assintótico da enstrofia em E(t) ~ (T* - t)^(-p)."
+    }
+  ],
+  "open_questions": [
+    "A prova de regularidade global não é rigorosa; a limitação de R(t) = E(t)/Φ(t) é discutida por análise de escala, mas não é demonstrada por uma estimativa fechada.",
+    "Na análise do caso p > 2, a comparação de expoentes em E˙ ≤ K R³ parece ter sinal inconsistente: se R³ ~ (T* - t)^(-6) e E˙ ~ (T* - t)^(-(p+1)), a condição de consistência assintótica deveria ser analisada cuidadosamente.",
+    "A conclusão de que, para p ≥ 5, a viscosidade efetiva necessariamente impede o blow-up antes de T* é heurística e requer uma desigualdade quantitativa que controle o termo advectivo.",
+    "No caso 1/2 ≤ p ≤ 2, o texto afirma que a enstrofia integrada diverge para p ≥ 1/2, mas a integral ∫(T* - t)^(-p) dt diverge apenas para p ≥ 1. A presença do núcleo de Green de segunda ordem altera ainda mais o limiar relevante para Φ.",
+    "A aplicação da escala dinâmica de Young ε(t) = (4γ/3)Φ(t)/E(t) exige E(t) > 0 e Φ(t) > 0; casos em que E ou Φ se anulam precisam ser tratados separadamente.",
+    "A não-negatividade de Φ(t) é provada sob superamortecimento e condições iniciais específicas, mas não é discutido o comportamento no regime subamortecido η² < 4τrelm².",
+    "A estimativa de Sobolev usada para Navier-Stokes 3D requer hipóteses de regularidade suficientes; uma prova global precisaria justificar aproximações, limites e continuidade das quantidades envolvidas.",
+    "Não há demonstração de existência global para o sistema acoplado completo; o texto apenas indica um mecanismo de amortecimento dinâmico.",
+    "A dependência física entre não-comutatividade do espaço-tempo, enstrofia hidrodinâmica e aumento de viscosidade é postulada, mas não derivada de um modelo microscópico.",
+    "O título sugere relação com matéria escura, mas o trecho fornecido não apresenta equações, observáveis ou mecanismos cosmológicos diretamente ligados à matéria escura."
+  ],
+  "source_file": "NS_and_Dark_Matter.pdf",
+  "sha256": "3bbd0f55503f9ae7e6e3b0d1fbbdf88222c90b4a011c982279b8a5a60984605f",
+  "imported_at": "2026-06-30T00:06:57.617841+00:00"
+}

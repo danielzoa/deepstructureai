@@ -1,0 +1,43 @@
+{
+  "id": "session_0001",
+  "title": "NTG Regularidade 3D",
+  "project": "NTG",
+  "objective": "Investigar controle de stretching via P0",
+  "team": {
+    "coordinator": {
+      "model": "ollama",
+      "goal": "Organizar a análise e produzir uma estratégia."
+    },
+    "reasoner": {
+      "model": "ollama",
+      "goal": "Construir raciocínio lógico e matemático."
+    },
+    "reviewer": {
+      "model": "ollama",
+      "goal": "Encontrar falhas, lacunas e riscos."
+    },
+    "coder": {
+      "model": "ollama",
+      "goal": "Escrever, revisar e depurar código."
+    },
+    "explainer": {
+      "model": "ollama",
+      "goal": "Explicar ideias de forma clara e intuitiva."
+    }
+  },
+  "status": "finished",
+  "started_at": "2026-07-04 14:16:49",
+  "finished_at": "2026-07-04 14:17:21",
+  "events": [
+    {
+      "time": "2026-07-04 14:16:49",
+      "type": "session_started",
+      "content": "Sessão iniciada: NTG Regularidade 3D"
+    },
+    {
+      "time": "2026-07-04 14:17:21",
+      "type": "session_finished",
+      "content": "Sessão encerrada."
+    }
+  ]
+}

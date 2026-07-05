@@ -1,0 +1,76 @@
+{
+  "id": "session_0003",
+  "title": "Teste Consensus",
+  "project": "DeepStructureAI",
+  "objective": "Validar consenso dinâmico",
+  "team": {
+    "coordinator": {
+      "model": "ollama",
+      "goal": "Organizar a análise, decidir a estratégia e produzir síntese."
+    },
+    "mathematician": {
+      "model": "ollama",
+      "goal": "Verificar rigor matemático, hipóteses, lemas e possíveis lacunas."
+    },
+    "physicist": {
+      "model": "ollama",
+      "goal": "Interpretar o problema fisicamente e avaliar plausibilidade conceitual."
+    },
+    "programmer": {
+      "model": "ollama",
+      "goal": "Implementar, revisar e depurar código científico."
+    },
+    "paper_analyst": {
+      "model": "ollama",
+      "goal": "Analisar artigos, extrair resultados, limitações e conexões."
+    },
+    "reviewer": {
+      "model": "ollama",
+      "goal": "Encontrar falhas, inconsistências, circularidades e riscos."
+    },
+    "explainer": {
+      "model": "hermes",
+      "goal": "Explicar ideias de forma clara, criativa e intuitiva."
+    }
+  },
+  "status": "running",
+  "started_at": "2026-07-04 18:12:46",
+  "finished_at": null,
+  "events": [
+    {
+      "time": "2026-07-04 18:12:46",
+      "type": "session_started",
+      "content": "Sessão iniciada: Teste Consensus"
+    },
+    {
+      "time": "2026-07-04 18:18:24",
+      "type": "consensus_short",
+      "content": "Pergunta: Explique o que é um qubit | Plano: {'category': 'explain', 'team': ['coordinator', 'explainer'], 'reason': 'Detectado como tarefa de explain.'}"
+    },
+    {
+      "time": "2026-07-04 19:08:11",
+      "type": "tool",
+      "content": "QuantumTool usado: bell"
+    },
+    {
+      "time": "2026-07-04 20:28:42",
+      "type": "consensus_short",
+      "content": "Pergunta: Explique H1 | Plano: {'category': 'explain', 'team': ['coordinator', 'explainer'], 'reason': 'Detectado como tarefa de explain.'}"
+    },
+    {
+      "time": "2026-07-04 21:07:33",
+      "type": "consensus_short",
+      "content": "Pergunta: Corrija conceitualmente uma classe Python mal organizada. | Plano: {'category': 'coding', 'team': ['coordinator', 'programmer', 'reviewer'], 'reason': 'Detectado como tarefa de coding.'}"
+    },
+    {
+      "time": "2026-07-04 21:14:56",
+      "type": "consensus_short",
+      "content": "Pergunta: Corrija conceitualmente uma classe Python mal organizada. | Plano: {'category': 'coding', 'team': ['coordinator', 'programmer', 'reviewer'], 'reason': 'Detectado como tarefa de coding.'}"
+    },
+    {
+      "time": "2026-07-04 21:20:49",
+      "type": "consensus_short",
+      "content": "Pergunta: Corrija conceitualmente uma classe Python mal organizada. | Plano: {'category': 'coding', 'team': ['coordinator', 'programmer', 'reviewer'], 'reason': 'Detectado como tarefa de coding.'}"
+    }
+  ]
+}

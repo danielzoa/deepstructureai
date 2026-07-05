@@ -1,0 +1,133 @@
+{
+  "title": "NTG: formulação preliminar de números com estrutura tensorial generalizada",
+  "subtitle": "Estado conceitual, formalismo mínimo e questões abertas",
+  "author": "Felipe Gaspar",
+  "abstract": "Este artigo examina criticamente a NTG como Teoria dos Números Tensoriais Generalizados, entendida como proposta conceitual destinada a ampliar a noção clássica de número por meio de entidades algébricas dotadas de conteúdo tensorial interno. O formalismo preliminar organiza objetos matemáticos em camadas estruturais, de modo que um único elemento possa conter componentes escalares, vetoriais, tensoriais e, eventualmente, componentes de ordens superiores. São apresentados a notação básica, o princípio de inclusão da matemática clássica, as operações ainda não completamente definidas e as principais lacunas formais. Também se distingue essa proposta de outro uso da sigla NTG, associado a uma geometria tensorial não comutativa especulativa aplicada a Navier-Stokes e à matéria escura. Conclui-se que, no estágio atual, a NTG deve ser tratada como programa de formalização, e não como teoria matemática concluída ou validada.",
+  "keywords": [
+    "NTG",
+    "números tensoriais generalizados",
+    "estrutura tensorial",
+    "álgebra estratificada",
+    "produto generalizado",
+    "projeção estrutural",
+    "formalização matemática"
+  ],
+  "sections": [
+    {
+      "title": "1. Introdução",
+      "paragraphs": [
+        "A sigla NTG designa, em contextos distintos, ao menos duas propostas. A primeira, central neste artigo, corresponde à Teoria dos Números Tensoriais Generalizados, concebida como ampliação da noção clássica de número mediante objetos com estrutura tensorial interna. A segunda corresponde a uma Non-commutative Tensorial Geometry aplicada, de modo especulativo, a problemas de regularidade em Navier-Stokes e a hipóteses sobre matéria escura. Como essas propostas não são formalmente equivalentes, convém tratá-las separadamente.",
+        "No sentido adotado aqui, a NTG propõe representar certas quantidades matemáticas não apenas como valores isolados, mas como entidades estruturadas capazes de conter intensidade, direção, acoplamento, geometria, anisotropia, correlações e hierarquias internas. A formulação permanece conceitual: não há ainda axiomatização completa nem resultados matemáticos demonstrados a partir do formalismo.",
+        "A motivação principal é a hipótese de que escalares, vetores, matrizes e tensores clássicos podem ser insuficientes, em certos contextos, para representar toda a estrutura relevante de fenômenos complexos. Essa afirmação deve ser entendida como hipótese de trabalho, não como conclusão estabelecida."
+      ],
+      "equations": []
+    },
+    {
+      "title": "2. Definição preliminar de elemento NTG",
+      "paragraphs": [
+        "Um elemento NTG é descrito como entidade estratificada composta por camadas estruturais de diferentes ordens. A camada de ordem zero representa a componente escalar; a de ordem um, a componente vetorial; a de ordem dois, uma componente tensorial de segunda ordem; e camadas superiores correspondem, de modo ainda genérico, a estruturas mais refinadas, correlações ou hierarquias internas.",
+        "A forma geral preliminar de um elemento NTG é uma soma finita de componentes pertencentes a espaços ou classes estruturais distintas. Essa decomposição constitui uma notação de trabalho. Permanece em aberto se sua formalização adequada deve assumir a forma de soma direta algébrica, soma direta topológica, estrutura graduada ou outra construção matemática.",
+        "Um exemplo conceitual elementar é um objeto composto por parte escalar, parte vetorial e parte tensorial. Esse exemplo ilustra a intenção unificadora da NTG, mas não demonstra, por si só, a obtenção de resultados novos em relação a formalismos já estabelecidos."
+      ],
+      "equations": [
+        "T = \\bigoplus_{k\\ge 0} T^{(k)}",
+        "X = X^{(0)} + X^{(1)} + X^{(2)} + \\cdots + X^{(m)}",
+        "X^{(k)} \\in T^{(k)}",
+        "X = a + v + A"
+      ]
+    },
+    {
+      "title": "3. Projeções estruturais e recuperação de componentes clássicas",
+      "paragraphs": [
+        "A NTG introduz projeções estruturais como aplicações destinadas a extrair a componente de uma ordem específica de um elemento. Essas projeções são relevantes porque permitiriam recuperar, ao menos formalmente, objetos clássicos a partir de uma entidade NTG mais ampla.",
+        "A projeção de ordem zero recuperaria a componente escalar; a de ordem um, a componente vetorial; e a de ordem dois, a componente tensorial de segunda ordem. Essa arquitetura fundamenta o princípio de inclusão, segundo o qual a NTG deve conter a matemática clássica como caso particular coerente.",
+        "A incorporação rigorosa de números reais, números complexos, espaços vetoriais e tensores clássicos ainda depende de uma construção compatível com todas as operações propostas. Assim, essa inclusão deve ser entendida como exigência programática."
+      ],
+      "equations": [
+        "\\pi_k : T \\to T^{(k)}",
+        "\\pi_k(X) = X^{(k)}",
+        "\\pi_0(X) = X^{(0)}"
+      ]
+    },
+    {
+      "title": "4. Operações algébricas propostas",
+      "paragraphs": [
+        "O formalismo preliminar menciona operações como soma, produto generalizado, projeções, contrações, acoplamentos internos e métricas ou seminormas estruturais. O produto generalizado, denotado por estrela, é proposto para codificar interações entre camadas ou entre entidades NTG.",
+        "Esse produto poderia abranger ou relacionar diferentes produtos da matemática clássica, incluindo produto usual, produto interno, produto tensorial e composição de operadores. Contudo, essa caracterização ainda é informal. Não estão definidos, nesse estágio, associatividade, comutatividade, distributividade, graduação, existência de unidade ou compatibilidade topológica.",
+        "Consequentemente, o uso matemático da NTG requer a especificação de axiomas para suas operações. Sem esses axiomas, expressões envolvendo o produto generalizado permanecem esquemas formais ou intenções de modelagem, e não objetos matemáticos plenamente determinados."
+      ],
+      "equations": [
+        "X + Y \\in T",
+        "X \\star Y \\in T",
+        "\\pi_k(X \\star Y) \\;\\text{depende de uma regra ainda não especificada}"
+      ]
+    },
+    {
+      "title": "5. Princípio de inclusão",
+      "paragraphs": [
+        "O princípio de inclusão é uma exigência central da NTG: a teoria deve recuperar a matemática clássica como caso limite, caso simples ou projeção natural. Essa exigência impede que a proposta se reduza a uma notação sem relação controlada com estruturas estabelecidas.",
+        "No caso mínimo, um elemento puramente escalar deve comportar-se como um número clássico quando todas as camadas não escalares forem nulas. Analogamente, objetos puramente vetoriais ou puramente tensoriais devem reproduzir, sob operações adequadas, o comportamento correspondente dos formalismos clássicos.",
+        "A validade formal da NTG depende de demonstrar a compatibilidade entre suas operações internas e as operações clássicas quando a estrutura é restrita a camadas específicas."
+      ],
+      "equations": [
+        "X = X^{(0)} \\quad \\Rightarrow \\quad X \\;\\text{deve reproduzir o caso escalar}",
+        "X = X^{(1)} \\quad \\Rightarrow \\quad X \\;\\text{deve reproduzir o caso vetorial}",
+        "X = X^{(2)} \\quad \\Rightarrow \\quad X \\;\\text{deve reproduzir o caso tensorial de ordem 2}"
+      ]
+    },
+    {
+      "title": "6. Hipóteses de trabalho",
+      "paragraphs": [
+        "As ideias motivadoras da NTG devem ser classificadas como hipóteses de trabalho. Entre elas estão a possibilidade de que a distinção tradicional entre número e tensor seja excessivamente rígida em certos contextos e a possibilidade de que alguns problemas sejam difíceis não apenas de resolver, mas também de representar adequadamente.",
+        "Outra hipótese é que uma representação estratificada possa revelar padrões ocultos em problemas com múltiplas estruturas interagentes. A ausência de exemplos concretos e não triviais mantém essa hipótese em aberto.",
+        "Também permanece hipotética a ideia de que um produto generalizado adequado possa codificar interações estruturais relevantes, e não apenas introduzir simbolismo adicional. Essa hipótese só poderá ser avaliada após a definição precisa do produto e sua aplicação a problemas com resultados verificáveis."
+      ],
+      "equations": []
+    },
+    {
+      "title": "7. Relação com a NTG não comutativa viscoelástica",
+      "paragraphs": [
+        "Outro uso da sigla NTG corresponde à expressão Non-commutative Tensorial Geometry. Nesse contexto, a proposta descreve uma geometria em que coordenadas espaço-temporais satisfazem uma relação de não comutatividade dependente de posição e tempo. O modelo introduz um tensor ou escala dinâmica de não comutatividade, denotado por \\Theta, que responderia à vorticidade local de um fluido.",
+        "Essa formulação inclui hipóteses especulativas: uma viscosidade efetiva aumentaria com \\Theta; a evolução de \\Theta seria governada por uma equação viscoelástica forçada pela vorticidade; e tensões geométricas residuais poderiam mimetizar efeitos atribuídos à matéria escura. Tais alegações não constituem demonstração matemática completa nem validação observacional quantitativa.",
+        "Por rigor terminológico e metodológico, essas hipóteses não servem como evidência para a Teoria dos Números Tensoriais Generalizados. Elas constituem, no máximo, uma linha especulativa separada que compartilha a sigla NTG, sem conexão formal estabelecida com a proposta de números tensoriais generalizados."
+      ],
+      "equations": [
+        "[x^{\\mu},x^{\\nu}] = i\\Theta^{\\mu\\nu}(x,t)",
+        "\\nu_{eff} = \\nu_0\\left(1 + \\lambda \\frac{\\Theta}{\\Theta_P}\\right)",
+        "\\tau_{rel}\\ddot{\\Theta} + \\eta\\dot{\\Theta} + m^2(\\Theta - \\Theta_P) = \\alpha(Re)\\|\\Omega\\|^2",
+        "E(t) = \\frac{1}{2}\\|\\nabla u\\|_{L^2}^2"
+      ]
+    },
+    {
+      "title": "8. Questões abertas",
+      "paragraphs": [
+        "A principal questão aberta é definir rigorosamente a classe ou espaço T das entidades NTG. Sem essa definição, não é possível determinar se a NTG deve ser entendida como álgebra, álgebra graduada, estrutura tensorial livre, construção topológica, categoria de objetos estratificados ou outra entidade matemática.",
+        "Outra questão central é caracterizar cada componente T^(k). A formulação preliminar associa T^(0) à camada escalar, T^(1) à camada vetorial e T^(2) à camada tensorial de segunda ordem, mas ainda não oferece definições formais suficientes para camadas superiores.",
+        "Também permanecem abertas as propriedades do produto generalizado, a definição de métricas ou seminormas estruturais, a compatibilidade com contrações e acoplamentos internos e a distinção entre a NTG e estruturas conhecidas, como álgebras graduadas, álgebras tensoriais, fibrados, multivetores e álgebras geométricas.",
+        "Por fim, falta demonstrar se a NTG produz resultados matemáticos verificáveis que não sejam apenas reformulações de estruturas existentes. Esse ponto é decisivo para avaliar a necessidade de introduzir uma noção ampliada de número."
+      ],
+      "equations": [
+        "\\text{Definir } T",
+        "\\text{Definir } T^{(k)} \\text{ para todo } k\\ge 0",
+        "\\text{Determinar propriedades de } \\star",
+        "\\text{Provar inclusão coerente dos casos clássicos}"
+      ]
+    },
+    {
+      "title": "9. Conclusão",
+      "paragraphs": [
+        "A NTG, como Teoria dos Números Tensoriais Generalizados, constitui um programa conceitual voltado à unificação de escalares, vetores, tensores e estruturas de ordem superior em objetos matemáticos estratificados. Sua ideia central é substituir, em determinados contextos, a noção de número como valor isolado por uma noção de entidade portadora de estrutura interna.",
+        "O formalismo disponível inclui decomposição em camadas, projeções estruturais e proposta de produto generalizado. No entanto, os axiomas fundamentais ainda não estão estabelecidos, e não há demonstrações de resultados matemáticos novos derivados da teoria. Portanto, a NTG deve ser considerada proposta em desenvolvimento, não teoria matemática completa.",
+        "O avanço da NTG depende de três tarefas principais: definir rigorosamente seus objetos, especificar suas operações e construir exemplos não triviais que produzam resultados verificáveis. Até que essas tarefas sejam realizadas, suas aplicações devem ser tratadas como hipóteses ou programas de pesquisa, e não como consequências demonstradas."
+      ],
+      "equations": []
+    }
+  ],
+  "references": [
+    "NTG: Teoria dos Números Tensoriais Generalizados.",
+    "Space-Time as a Controller: Resolving 3D Navier-Stokes Regularity and Dark Matter via Viscoelastic NTG."
+  ],
+  "reviewed_at": "2026-06-29T19:59:22.833575+00:00",
+  "created_at": "2026-06-29T19:32:54.421685+00:00",
+  "status": "polished"
+}
