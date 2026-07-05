@@ -124,6 +124,33 @@ npm run build
 npx wrangler pages deploy dist --project-name deepstructureai
 ```
 
+## Backend em Produção
+
+O backend pode ser publicado como container Docker. Este repositório já inclui:
+
+- `Dockerfile` para rodar o FastAPI.
+- `.dockerignore` para não enviar cache, `.env`, `node_modules` ou build local.
+- `render.yaml` como ponto de partida para Render.
+
+No provedor do backend, configure as chaves como variáveis secretas:
+
+```env
+ZAI_API_KEY=
+GEMINI_API_KEY=
+GROQ_API_KEY=
+DEEPSEEK_API_KEY=
+FRONTEND_ORIGINS=https://deepstructureai.pages.dev
+```
+
+Depois que a API estiver online, configure no Cloudflare Pages:
+
+```env
+VITE_API_URL=https://sua-api-do-deepstructureai
+VITE_DEMO_MODE=false
+```
+
+Faça um novo build/deploy do frontend para o site usar o backend real.
+
 ## Mock/Demo
 
 - Chat retorna resposta demo quando nenhuma IA da rota está disponível ou todas falham.

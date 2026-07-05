@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: deepstructureai-api
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: FRONTEND_ORIGINS
+        value: https://deepstructureai.pages.dev
+      - key: DEFAULT_MODEL
+        value: glm
+      - key: DEFAULT_FAST_MODEL
+        value: groq
+      - key: DEFAULT_DOCUMENT_MODEL
+        value: gemini
+      - key: DEFAULT_CRITIC_MODEL
+        value: deepseek
+      - key: DEFAULT_OFFLINE_MODEL
+        value: ollama
+      - key: ZAI_BASE_URL
+        value: https://api.z.ai/api/paas/v4
+      - key: ZAI_MODEL
+        value: GLM-5.2
+      - key: GEMINI_MODEL
+        value: gemini-flash-latest
+      - key: GROQ_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: DEEPSEEK_BASE_URL
+        value: https://api.deepseek.com
+      - key: DEEPSEEK_MODEL
+        value: deepseek-chat
+      - key: OLLAMA_BASE_URL
+        value: http://localhost:11434
+      - key: OLLAMA_MODEL
+        value: llama3.1

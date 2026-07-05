@@ -1,5 +1,6 @@
-from pathlib import Path
 import sys
+import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -14,11 +15,19 @@ load_dotenv(PROJECT_ROOT / ".env")
 from app.api import activity, agents, chat, documents, graph, health, lab, memory, models, router
 
 
+def _cors_origins() -> list[str]:
+    raw = os.getenv("FRONTEND_ORIGINS") or os.getenv("FRONTEND_URL") or ""
+    origins = [origin.strip().rstrip("/") for origin in raw.split(",") if origin.strip()]
+    local_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    merged = [*local_origins, *origins]
+    return list(dict.fromkeys(merged))
+
+
 app = FastAPI(title="DeepStructureAI API", version="0.1.0-mvp")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "*"],
+    allow_origins=_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
