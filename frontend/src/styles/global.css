@@ -419,6 +419,39 @@ button {
   padding: 18px;
 }
 
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-title-row h2 {
+  margin-bottom: 0;
+}
+
+.icon-chip {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #dce3ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #263149;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.card-status {
+  margin: 10px 0 0;
+  color: #66728a;
+  font-size: 13px;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

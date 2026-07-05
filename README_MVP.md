@@ -51,6 +51,17 @@ Endpoints:
 - `GET /api/router/status`
 - `POST /api/chat`
 - `POST /api/router/test`
+- `POST /api/documents/import`
+
+## Importar Documentos
+
+No frontend, use o botao de upload no card "Documentos recentes".
+
+O backend aceita `.pdf`, `.tex`, `.md`, `.json` e `.txt`, com limite de 10 MB, e grava em:
+
+```text
+knowledge/NTG/imports/web_uploads/
+```
 
 ## Rodar Backend
 

@@ -94,6 +94,20 @@ export default function App() {
     ]);
   }
 
+  async function importDocument(file: File) {
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+    const contentBase64 = dataUrl.split(",")[1] || "";
+    await api.importDocument(file.name, contentBase64);
+    const [docsData, summaryData] = await Promise.all([api.getDocuments(), api.getSummary()]);
+    setDocuments(docsData as any[]);
+    setSummary(summaryData as Summary);
+  }
+
   return (
     <div className="app-shell">
       <Sidebar models={models} agents={agents} />
@@ -109,7 +123,7 @@ export default function App() {
             />
             <div className="bottom-grid">
               <LabCard lab={lab} />
-              <DocumentsCard documents={documents} />
+              <DocumentsCard documents={documents} onImport={importDocument} />
             </div>
           </div>
           <aside className="right-column">

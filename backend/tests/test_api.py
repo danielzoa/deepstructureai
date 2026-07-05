@@ -56,3 +56,20 @@ def test_router_status_and_dry_run():
     )
     assert test.status_code == 200
     assert "chain" in test.json()
+
+
+def test_import_document(tmp_path):
+    response = client.post(
+        "/api/documents/import",
+        json={
+            "name": "teste_import.md",
+            "contentBase64": "IyBUZXN0ZQo=",
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["imported"] is True
+    assert data["name"].startswith("teste_import")
+    imported_path = BACKEND_ROOT.parent / data["path"]
+    if imported_path.exists():
+        imported_path.unlink()

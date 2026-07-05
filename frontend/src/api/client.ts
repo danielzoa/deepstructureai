@@ -1,5 +1,10 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "true";
+const configuredApiUrl = import.meta.env.VITE_API_URL;
+const isLocalHost =
+  typeof window !== "undefined" &&
+  ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const API_URL = configuredApiUrl || "http://localhost:8000";
+const DEMO_MODE =
+  import.meta.env.VITE_DEMO_MODE === "true" || (!configuredApiUrl && !isLocalHost);
 
 export type ChatMessage = {
   role: "assistant" | "user";
@@ -94,6 +99,20 @@ export const api = {
       { name: "hipoteses.md", size: 12000 },
       { name: "enstrofia_ntg.tex", size: 9000 }
     ]),
+  importDocument: (name: string, contentBase64: string) =>
+    request(
+      "/api/documents/import",
+      {
+        method: "POST",
+        body: JSON.stringify({ name, contentBase64 })
+      },
+      {
+        name,
+        path: `demo/${name}`,
+        size: Math.round((contentBase64.length * 3) / 4),
+        imported: false
+      }
+    ),
   getActivity: () =>
     request("/api/activity", undefined, [
       { time: "10:45", event: "Grafo atualizado" },

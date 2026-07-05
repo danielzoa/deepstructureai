@@ -1,6 +1,7 @@
 import json
 import os
 import sqlite3
+import base64
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,9 @@ def _file_size_mb(path: Path) -> float:
 
 
 class DeepStructureService:
+    allowed_document_suffixes = {".pdf", ".tex", ".md", ".json", ".txt"}
+    max_import_bytes = 10 * 1024 * 1024
+
     dangerous_tokens = {
         "rm ",
         "del ",
@@ -221,6 +225,46 @@ class DeepStructureService:
                         }
                     )
         return sorted(docs, key=lambda item: item["modified"], reverse=True)[:40]
+
+    def import_document(self, name: str, content_base64: str):
+        safe_name = Path(name).name.strip()
+        suffix = Path(safe_name).suffix.lower()
+        if not safe_name or suffix not in self.allowed_document_suffixes:
+            raise ValueError("Tipo de documento nao permitido.")
+
+        try:
+            content = base64.b64decode(content_base64, validate=True)
+        except Exception as exc:
+            raise ValueError("Conteudo base64 invalido.") from exc
+
+        if len(content) > self.max_import_bytes:
+            raise ValueError("Documento excede o limite de 10 MB.")
+
+        target_dir = PROJECT_ROOT / "knowledge" / "NTG" / "imports" / "web_uploads"
+        target_dir.mkdir(parents=True, exist_ok=True)
+        target = self._unique_path(target_dir / safe_name)
+        target.write_bytes(content)
+
+        return {
+            "name": target.name,
+            "path": str(target.relative_to(PROJECT_ROOT)),
+            "size": target.stat().st_size,
+            "imported": True,
+        }
+
+    def _unique_path(self, path: Path):
+        if not path.exists():
+            return path
+
+        stem = path.stem
+        suffix = path.suffix
+        parent = path.parent
+        counter = 2
+        while True:
+            candidate = parent / f"{stem}_{counter}{suffix}"
+            if not candidate.exists():
+                return candidate
+            counter += 1
 
     def activity(self):
         log_path = PROJECT_ROOT / "logs" / "agent.log"
