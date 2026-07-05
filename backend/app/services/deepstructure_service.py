@@ -46,6 +46,13 @@ class DeepStructureService:
         "drop table",
     }
 
+    def ensure_storage(self):
+        (PROJECT_ROOT / "data").mkdir(parents=True, exist_ok=True)
+        (PROJECT_ROOT / "knowledge" / "NTG" / "imports" / "web_uploads").mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
     def project_root(self):
         return PROJECT_ROOT
 

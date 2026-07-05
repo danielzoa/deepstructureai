@@ -1,5 +1,6 @@
 import sys
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -13,6 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
 load_dotenv(PROJECT_ROOT / ".env")
 
 from app.api import activity, agents, chat, documents, graph, health, lab, memory, models, router
+from app.services.deepstructure_service import service
 
 
 def _cors_origins() -> list[str]:
@@ -23,7 +25,13 @@ def _cors_origins() -> list[str]:
     return list(dict.fromkeys(merged))
 
 
-app = FastAPI(title="DeepStructureAI API", version="0.1.0-mvp")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    service.ensure_storage()
+    yield
+
+
+app = FastAPI(title="DeepStructureAI API", version="0.1.0-mvp", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

@@ -26,6 +26,7 @@ def test_readiness_ok():
     data = response.json()
     assert "configuredModels" in data
     assert "warnings" in data
+    assert data["uploadDirectoryExists"] is True
 
 
 def test_summary_ok():
