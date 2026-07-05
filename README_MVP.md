@@ -131,6 +131,8 @@ O backend pode ser publicado como container Docker. Este repositório já inclui
 - `Dockerfile` para rodar o FastAPI.
 - `.dockerignore` para não enviar cache, `.env`, `node_modules` ou build local.
 - `render.yaml` como ponto de partida para Render.
+- `railway.json` como ponto de partida para Railway.
+- `Procfile` para provedores compatíveis.
 
 No provedor do backend, configure as chaves como variáveis secretas:
 
@@ -150,6 +152,13 @@ VITE_DEMO_MODE=false
 ```
 
 Faça um novo build/deploy do frontend para o site usar o backend real.
+
+O roteiro completo está em `docs/PRODUCTION_RUNBOOK.md`.
+Depois de hospedar a API, valide tudo com:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\check-production.ps1 -ApiUrl https://sua-api-online -SiteUrl https://deepstructureai.pages.dev -RunTests -RunBuild
+```
 
 ## CI
 
