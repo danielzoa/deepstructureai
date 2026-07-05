@@ -32,7 +32,9 @@ def _file_size_mb(path: Path) -> float:
 
 class DeepStructureService:
     allowed_document_suffixes = {".pdf", ".tex", ".md", ".json", ".txt"}
+    readable_document_suffixes = {".pdf", ".tex", ".md", ".json", ".txt"}
     max_import_bytes = 10 * 1024 * 1024
+    max_read_chars = 80_000
 
     dangerous_tokens = {
         "rm ",
@@ -319,7 +321,7 @@ class DeepStructureService:
             if not root.exists():
                 continue
             for path in root.rglob("*"):
-                if path.is_file() and path.suffix.lower() in {".pdf", ".tex", ".md", ".json", ".db"}:
+                if path.is_file() and path.suffix.lower() in {".pdf", ".tex", ".md", ".json", ".txt", ".db"}:
                     docs.append(
                         {
                             "name": path.name,
@@ -329,6 +331,92 @@ class DeepStructureService:
                         }
                     )
         return sorted(docs, key=lambda item: item["modified"], reverse=True)[:40]
+
+    def _document_path(self, raw_path: str):
+        safe_path = Path(raw_path.strip())
+        if safe_path.is_absolute() or ".." in safe_path.parts:
+            raise ValueError("Caminho de documento não permitido.")
+        path = (PROJECT_ROOT / safe_path).resolve()
+        if PROJECT_ROOT.resolve() not in path.parents:
+            raise ValueError("Documento fora do projeto não permitido.")
+        if not path.exists() or not path.is_file():
+            raise FileNotFoundError("Documento não encontrado.")
+
+        allowed_paths = {str((PROJECT_ROOT / doc["path"]).resolve()) for doc in self.documents()}
+        if str(path) not in allowed_paths:
+            raise ValueError("Documento não está na lista indexada do projeto.")
+        if path.suffix.lower() not in self.readable_document_suffixes:
+            raise ValueError("Tipo de documento não suportado para leitura.")
+        return path
+
+    def _truncate_text(self, text: str):
+        if len(text) <= self.max_read_chars:
+            return text, False
+        return text[: self.max_read_chars] + "\n\n[Prévia truncada pelo limite de leitura.]", True
+
+    def _read_pdf_text(self, path: Path):
+        try:
+            from pypdf import PdfReader
+        except ImportError:
+            return (
+                "Leitura de PDF requer o pacote pypdf no ambiente do backend. "
+                "O arquivo foi encontrado, mas o texto não pôde ser extraído.",
+                False,
+                "pypdf_unavailable",
+            )
+
+        reader = PdfReader(str(path))
+        if reader.is_encrypted:
+            raise ValueError("PDF protegido por senha não pode ser lido.")
+
+        chunks = []
+        for index, page in enumerate(reader.pages[:30], start=1):
+            text = (page.extract_text() or "").strip()
+            if text:
+                chunks.append(f"--- Página {index} ---\n{text}")
+
+        if not chunks:
+            return (
+                "Não foi possível extrair texto deste PDF. Ele pode ser digitalizado como imagem ou exigir OCR.",
+                False,
+                "pdf_text_empty",
+            )
+
+        content, truncated = self._truncate_text("\n\n".join(chunks))
+        if len(reader.pages) > 30:
+            truncated = True
+            content += "\n\n[Prévia limitada às primeiras 30 páginas.]"
+        return content, truncated, ""
+
+    def read_document(self, raw_path: str):
+        path = self._document_path(raw_path)
+        suffix = path.suffix.lower()
+        warning = ""
+
+        if suffix == ".pdf":
+            content, truncated, warning = self._read_pdf_text(path)
+        elif suffix == ".json":
+            data = _read_json(path, None)
+            if data is None:
+                content = path.read_text(encoding="utf-8", errors="replace")
+            else:
+                content = json.dumps(data, indent=2, ensure_ascii=False)
+            content, truncated = self._truncate_text(content)
+        else:
+            content = path.read_text(encoding="utf-8", errors="replace")
+            content, truncated = self._truncate_text(content)
+
+        self.record_activity(f"Documento lido: {path.name}")
+        return {
+            "name": path.name,
+            "path": str(path.relative_to(PROJECT_ROOT)),
+            "size": path.stat().st_size,
+            "suffix": suffix,
+            "content": content,
+            "truncated": truncated,
+            "readable": not bool(warning),
+            "warning": warning,
+        }
 
     def import_document(self, name: str, content_base64: str):
         safe_name = Path(name).name.strip()

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-import { api, getClientConfig, type ChatMessage } from "./api/client";
+import { api, getClientConfig, type ChatMessage, type DocumentPreview } from "./api/client";
 import { ActivityCard } from "./components/ActivityCard";
 import { ChatPanel } from "./components/ChatPanel";
 import { DocumentsCard } from "./components/DocumentsCard";
@@ -60,6 +60,7 @@ export default function App() {
     progress: 68
   });
   const [documents, setDocuments] = useState<any[]>([]);
+  const [selectedDocument, setSelectedDocument] = useState<DocumentPreview | null>(null);
   const [activity, setActivity] = useState<any[]>([]);
   const [routerStatus, setRouterStatus] = useState<any>({ routes: {}, activeRoutes: {}, models: [] });
   const [readiness, setReadiness] = useState<any>({ status: "unknown", warnings: [] });
@@ -180,6 +181,20 @@ export default function App() {
     setDocuments(docsData as any[]);
     setSummary(summaryData as Summary);
     setActivity(activityData as any[]);
+  }
+
+  async function readDocument(doc: any) {
+    const path = doc.path || doc.name;
+    const preview = await api.readDocument(path);
+    setSelectedDocument(preview);
+  }
+
+  function askAboutDocument() {
+    if (!selectedDocument) return;
+    setActiveView("chat");
+    setChatMode("document");
+    const excerpt = selectedDocument.content.slice(0, 12000);
+    send(`Analise este documento (${selectedDocument.name}) e extraia resumo, hipóteses, definições e próximos passos:\n\n${excerpt}`);
   }
 
   async function runTool(command: string) {
@@ -327,8 +342,24 @@ export default function App() {
           <DetailPanel title="Artigos e Documentos" description="Documentos encontrados em NTG, imports, output e data.">
             <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar documentos..." />
-            <DataList items={filterRows(documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`]))} />
-            <button className="wide-button" onClick={() => exportJson("documentos", documents)}>Exportar documentos</button>
+            <DocumentList documents={documents} items={filterRows(documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`]))} onRead={readDocument} />
+            {selectedDocument && (
+              <div className="reader-panel">
+                <div className="reader-head">
+                  <div>
+                    <h3>{selectedDocument.name}</h3>
+                    <p>{selectedDocument.path}{selectedDocument.truncated ? " | prévia truncada" : ""}</p>
+                  </div>
+                  <button className="wide-button" onClick={askAboutDocument}>Analisar no chat</button>
+                </div>
+                {selectedDocument.warning && <p className="card-status">Aviso: {selectedDocument.warning}</p>}
+                <pre className="document-preview">{selectedDocument.content}</pre>
+              </div>
+            )}
+            <div className="action-row">
+              <button className="wide-button" onClick={() => exportJson("documentos", documents)}>Exportar documentos</button>
+              <button className="wide-button" onClick={() => selectedDocument && exportJson("documento-lido", selectedDocument)} disabled={!selectedDocument}>Exportar leitura</button>
+            </div>
           </DetailPanel>
         )}
 
@@ -443,6 +474,24 @@ function DataList({ items }: { items: Array<[string, string]> }) {
         <div key={`${label}-${index}`}>
           <strong>{label}</strong>
           <span>{value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DocumentList({ documents, items, onRead }: { documents: any[]; items: Array<[string, string]>; onRead: (doc: any) => void }) {
+  const visibleDocs = items
+    .map(([label]) => documents.find((doc) => doc.name === label))
+    .filter(Boolean);
+
+  return (
+    <div className="data-list document-list">
+      {visibleDocs.map((doc: any, index: number) => (
+        <div key={`${doc.path || doc.name}-${index}`}>
+          <strong>{doc.name}</strong>
+          <span>{doc.path || `${doc.size} bytes`}</span>
+          <button onClick={() => onRead(doc)} type="button">Ler</button>
         </div>
       ))}
     </div>

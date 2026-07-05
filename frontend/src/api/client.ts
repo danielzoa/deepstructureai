@@ -22,6 +22,17 @@ export type ChatMessage = {
   createdAt?: string;
 };
 
+export type DocumentPreview = {
+  name: string;
+  path: string;
+  size: number;
+  suffix: string;
+  content: string;
+  truncated: boolean;
+  readable: boolean;
+  warning?: string;
+};
+
 const mockGraph = {
   nodes: [
     { id: "ntg", label: "NTG" },
@@ -121,6 +132,21 @@ export const api = {
       { name: "hipóteses.md", size: 12000 },
       { name: "enstrofia_ntg.tex", size: 9000 }
     ]),
+  readDocument: (path: string) =>
+    request(
+      `/api/documents/read?path=${encodeURIComponent(path)}`,
+      undefined,
+      {
+        name: path.split("/").pop() || "documento",
+        path,
+        size: 0,
+        suffix: "",
+        content: "Leitura disponível quando o backend real estiver conectado.",
+        truncated: false,
+        readable: false,
+        warning: "demo_mode"
+      } as DocumentPreview
+    ),
   importDocument: (name: string, contentBase64: string) =>
     request(
       "/api/documents/import",

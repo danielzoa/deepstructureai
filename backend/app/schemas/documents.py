@@ -11,3 +11,14 @@ class DocumentImportResponse(BaseModel):
     path: str
     size: int
     imported: bool
+
+
+class DocumentReadResponse(BaseModel):
+    name: str
+    path: str
+    size: int
+    suffix: str
+    content: str
+    truncated: bool
+    readable: bool
+    warning: str = ""

@@ -91,6 +91,28 @@ def test_import_document(tmp_path):
         imported_path.unlink()
 
 
+def test_read_document_endpoint(tmp_path):
+    response = client.post(
+        "/api/documents/import",
+        json={
+            "name": "teste_read.md",
+            "contentBase64": "IyBUZXN0ZQoKQ29udGV1ZG8gZG8gZG9jdW1lbnRvLgo=",
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+    read = client.get("/api/documents/read", params={"path": data["path"]})
+    assert read.status_code == 200
+    payload = read.json()
+    assert payload["name"].startswith("teste_read")
+    assert "Conteudo do documento" in payload["content"] or "Conteúdo do documento" in payload["content"]
+
+    imported_path = BACKEND_ROOT.parent / data["path"]
+    if imported_path.exists():
+        imported_path.unlink()
+
+
 def test_quick_commands_work():
     for command in ["/team", "/benchmark", "/graph build", "/semantic search", "/validate idea"]:
         response = client.post("/api/command", json={"command": command})

@@ -687,6 +687,55 @@ button {
   background: #fff;
 }
 
+.document-list div {
+  grid-template-columns: minmax(160px, 0.35fr) minmax(0, 1fr) 74px;
+}
+
+.document-list button {
+  min-height: 32px;
+  border: 1px solid #dce3ed;
+  border-radius: 6px;
+  background: #fff;
+  color: #22304a;
+}
+
+.reader-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.reader-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 12px;
+  align-items: center;
+}
+
+.reader-head h3,
+.reader-head p {
+  margin: 0;
+}
+
+.reader-head p {
+  color: #66728a;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.document-preview {
+  max-height: 430px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #e3e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #172033;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 .data-list strong,
 .data-list span {
   min-width: 0;
@@ -758,8 +807,10 @@ button {
 .theme-dark .wide-button,
 .theme-dark .icon-chip,
 .theme-dark .chat-tools button,
-.theme-dark .search-row input,
-.theme-dark .tool-grid button {
+  .theme-dark .search-row input,
+  .theme-dark .tool-grid button,
+  .theme-dark .document-list button,
+  .theme-dark .document-preview {
   border-color: #263247;
   background: #172033;
   color: #e5edf9;
@@ -826,6 +877,8 @@ button {
 
   .detail-metrics,
   .data-list div,
+  .document-list div,
+  .reader-head,
   .action-row {
     grid-template-columns: 1fr;
   }
