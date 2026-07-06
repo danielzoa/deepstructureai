@@ -2,14 +2,9 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { api, getClientConfig, type ChatMessage, type DocumentPreview } from "./api/client";
-import { ActivityCard } from "./components/ActivityCard";
 import { ChatPanel } from "./components/ChatPanel";
 import { DocumentsCard } from "./components/DocumentsCard";
-import { KnowledgeGraphCard } from "./components/KnowledgeGraphCard";
-import { LabCard } from "./components/LabCard";
-import { MemoryCard } from "./components/MemoryCard";
 import { Sidebar, type ViewId } from "./components/Sidebar";
-import { SummaryCards } from "./components/SummaryCards";
 import { Topbar } from "./components/Topbar";
 
 type Summary = {
@@ -272,7 +267,7 @@ export default function App() {
   function renderMainView() {
     if (activeView === "chat") {
       return (
-        <div className="dashboard-grid">
+        <div className="chat-focus-grid">
           <div className="main-column">
             <ChatPanel
               messages={messages}
@@ -282,16 +277,34 @@ export default function App() {
               onModeChange={setChatMode}
               onSend={send}
             />
-            <div className="bottom-grid">
-              <LabCard lab={lab} onOpen={() => openView("lab")} />
-              <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
-            </div>
           </div>
-          <aside className="right-column">
-            <SummaryCards summary={summary} />
-            <KnowledgeGraphCard nodes={graph.nodes} onOpen={() => openView("graph")} />
-            <MemoryCard items={memory} onOpen={() => openView("memory")} />
-            <ActivityCard activity={activity} onOpen={() => openView("activity")} />
+          <aside className="context-column">
+            <section className="panel-card context-card">
+              <h2>Contexto</h2>
+              <div className="context-list">
+                <button onClick={() => openView("articles")} type="button">
+                  <strong>Documentos</strong>
+                  <span>{documents.length} arquivos</span>
+                </button>
+                <button onClick={() => openView("graph")} type="button">
+                  <strong>Grafo</strong>
+                  <span>{graph.nodes.length} nos</span>
+                </button>
+                <button onClick={() => openView("lab")} type="button">
+                  <strong>Laboratorio</strong>
+                  <span>{lab.progress}% de progresso</span>
+                </button>
+              </div>
+            </section>
+            <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
+            <section className="panel-card context-card">
+              <h2>Comandos</h2>
+              <div className="tool-grid compact-tools">
+                {["/help", "/models", "/documents", "/graph stats"].map((command) => (
+                  <button key={command} onClick={() => send(command)} type="button">{command}</button>
+                ))}
+              </div>
+            </section>
           </aside>
         </div>
       );
@@ -340,7 +353,6 @@ export default function App() {
 
         {activeView === "articles" && (
           <DetailPanel title="Artigos e Documentos" description="Documentos encontrados em NTG, imports, output e data.">
-            <DocumentsCard documents={documents} onImport={importDocument} onOpen={() => openView("articles")} />
             <SearchBox value={detailSearch} onChange={setDetailSearch} placeholder="Filtrar documentos..." />
             <DocumentList documents={documents} items={filterRows(documents.map((doc) => [doc.name, doc.path || `${doc.size} bytes`]))} onRead={readDocument} />
             {selectedDocument && (

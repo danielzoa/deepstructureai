@@ -3,17 +3,14 @@ import { FormEvent, useState } from "react";
 
 import type { ChatMessage } from "../api/client";
 
-const quick = ["/about", "/health", "/team", "/models", "/benchmark"];
-const commands = ["/import_ntg", "/graph build", "/lab start", "/semantic search", "/validate idea"];
 const modes = [
   ["auto", "Auto"],
   ["chat", "Chat"],
-  ["fast", "Rápido"],
+  ["fast", "Rapido"],
   ["document", "Documento"],
-  ["critic", "Crítico"],
-  ["code", "Código"],
-  ["lab", "Laboratório"],
-  ["offline", "Offline"]
+  ["critic", "Critico"],
+  ["code", "Codigo"],
+  ["lab", "Lab"]
 ];
 
 type Props = {
@@ -37,18 +34,31 @@ export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onS
   }
 
   return (
-    <section className="chat-shell">
-      <div className="section-heading">
-        <h1>Chat</h1>
-        <p>Converse com os agentes de pesquisa</p>
+    <section className="chat-shell calm-chat">
+      <div className="chat-panel-head">
+        <div>
+          <h1>Chat</h1>
+          <p>Pesquisa, escrita e analise com roteamento multi-IA.</p>
+        </div>
+        <div className="chat-tools">
+          <button onClick={onExport} title="Exportar conversa" type="button">
+            <Download size={16} />
+          </button>
+          <button onClick={() => onSend("/health")} title="Atualizar status" type="button">
+            <RotateCcw size={16} />
+          </button>
+          <button onClick={onClear} title="Limpar conversa" type="button">
+            <Trash2 size={16} />
+          </button>
+        </div>
       </div>
 
-      <div className="mode-tabs" role="tablist" aria-label="Modo do chat">
-        {modes.map(([value, label]) => (
+      <div className="mode-tabs compact-tabs" role="tablist" aria-label="Modo do chat">
+        {modes.map(([itemValue, label]) => (
           <button
-            className={mode === value ? "selected" : ""}
-            key={value}
-            onClick={() => onModeChange(value)}
+            className={mode === itemValue ? "selected" : ""}
+            key={itemValue}
+            onClick={() => onModeChange(itemValue)}
             type="button"
           >
             {label}
@@ -57,25 +67,6 @@ export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onS
       </div>
 
       <div className="chat-card">
-        <div className="assistant-head">
-          <div className="mini-logo">DS</div>
-          <div>
-            <strong>DeepStructureAI</strong>
-            <span>Assistente de Pesquisa Científica</span>
-          </div>
-          <div className="chat-tools">
-            <button onClick={onExport} title="Exportar conversa" type="button">
-              <Download size={16} />
-            </button>
-            <button onClick={() => onSend("/health")} title="Atualizar status" type="button">
-              <RotateCcw size={16} />
-            </button>
-            <button onClick={onClear} title="Limpar conversa" type="button">
-              <Trash2 size={16} />
-            </button>
-          </div>
-        </div>
-
         <div className="message-stream">
           {messages.map((message, index) => (
             <article className={`message ${message.role}`} key={`${message.role}-${index}`}>
@@ -84,35 +75,18 @@ export function ChatPanel({ messages, mode, onClear, onExport, onModeChange, onS
             </article>
           ))}
         </div>
-
-        <div className="quick-actions">
-          {quick.map((item) => (
-            <button key={item} onClick={() => onSend(item)}>
-              {item}
-            </button>
-          ))}
-        </div>
       </div>
 
       <form className="chat-input" onSubmit={submit}>
         <input
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          placeholder="Digite sua pergunta ou comando..."
+          placeholder="Pergunte sobre sua pesquisa ou use /help..."
         />
         <button title="Enviar" type="submit">
           <SendHorizontal size={20} />
         </button>
       </form>
-
-      <div className="command-strip">
-        <span>Comandos rápidos:</span>
-        {commands.map((command) => (
-          <button key={command} onClick={() => onSend(command)}>
-            {command}
-          </button>
-        ))}
-      </div>
     </section>
   );
 }
