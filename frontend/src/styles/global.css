@@ -847,6 +847,7 @@ button {
     position: static;
     width: 100%;
     min-height: 0;
+    padding: 18px 16px 12px;
   }
 
   .app-shell {
@@ -864,7 +865,9 @@ button {
   }
 
   .topbar {
-    padding: 0 16px;
+    height: auto;
+    min-height: 58px;
+    padding: 10px 16px;
   }
 
   .dashboard-grid {
@@ -881,5 +884,39 @@ button {
   .reader-head,
   .action-row {
     grid-template-columns: 1fr;
+  }
+
+  .brand {
+    padding-bottom: 14px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand strong {
+    font-size: 16px;
+  }
+
+  .sidebar section {
+    padding: 14px 0;
+  }
+
+  .sidebar section:not(:first-of-type),
+  .profile {
+    display: none;
+  }
+
+  .nav-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nav-list button {
+    min-height: 42px;
+  }
+
+  .detail-panel {
+    max-width: none;
   }
 }
